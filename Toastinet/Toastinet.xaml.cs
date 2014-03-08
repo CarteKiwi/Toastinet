@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -9,7 +10,7 @@ namespace Toastinet
     /// <summary>
     /// Toastinet is an UserControl developed by Guillaume DEMICHELI shared on CodePlex via Nuget for Windows Phone
     /// </summary>
-    public partial class Toastinet
+    public partial class Toastinet : INotifyPropertyChanged
     {
         #region Private variables
         private TimeSpan _interval = new TimeSpan(0, 0, 3);
@@ -56,7 +57,6 @@ namespace Toastinet
             set { SetValue(MessageProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for Message.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty MessageProperty =
             DependencyProperty.Register("Message", typeof(string), typeof(Toastinet), new PropertyMetadata(String.Empty, OnTextChanged));
 
@@ -72,12 +72,12 @@ namespace Toastinet
                 if (toast.ToastMsg != null)
                     toast.ToastMsg.Text = e.NewValue.ToString();
 
-                VisualStateManager.GoToState(toast, "Opened", true);
+                VisualStateManager.GoToState(toast, toast.AnimationType + "Opened", true);
 
                 var timer = new DispatcherTimer { Interval = toast._interval };
                 timer.Tick += (s, t) =>
                 {
-                    VisualStateManager.GoToState(toast, "Closed", true);
+                    VisualStateManager.GoToState(toast, toast.AnimationType + "Closed", true);
                     timer.Stop();
                     toast.Message = String.Empty;
                 };
@@ -122,11 +122,23 @@ namespace Toastinet
         #endregion
 
         #region Height
-        public int InvertedHeight { get { return -Height; } }
+
+        public int InvertedHeight
+        {
+            get
+            {
+                return -(int)GetValue(HeightProperty);
+            }
+        }
+
         public new int Height
         {
             get { return (int)GetValue(HeightProperty); }
-            set { SetValue(HeightProperty, value); }
+            set
+            {
+                SetValue(HeightProperty, value);
+                //PropertyChanged(this, new PropertyChangedEventArgs("InvertedHeight"));
+            }
         }
 
         public new static readonly DependencyProperty HeightProperty =
@@ -153,19 +165,50 @@ namespace Toastinet
         public static readonly DependencyProperty ImageProperty = DependencyProperty.Register("Image", typeof(string), typeof(Toastinet), new PropertyMetadata("/Toastinet;component/Assets/tile.png"));
         #endregion
 
+        #region AnimationType
+        public string AnimationType
+        {
+            get { return (string)GetValue(AnimationTypeProperty); }
+            set { SetValue(AnimationTypeProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for AnimationType.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty AnimationTypeProperty =
+            DependencyProperty.Register("AnimationType", typeof(string), typeof(Toastinet), new PropertyMetadata("rotation", OnAnimationTypeChanged));
+
+        private static void OnAnimationTypeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var toast = (Toastinet)d;
+            var animType = e.NewValue.ToString().ToLower();
+
+            if (System.String.CompareOrdinal(animType, "translation") == 0 && System.String.CompareOrdinal(animType, "rotation") == 0)
+                toast.AnimationType = "rotation";
+            else
+            {
+                toast.AnimationType = animType.ToLower();
+            }
+        }
+
+        #endregion
+
+
         /// <summary>
         /// Constructor
         /// </summary>
         public Toastinet()
         {
             InitializeComponent();
-
-            VisualStateManager.GoToState(this, "Closed", true);
+            this.Loaded += (s, e) =>
+            {
+                VisualStateManager.GoToState(this, AnimationType + "Closed", false);
+            };
         }
 
         private void OnFirstContainerChanged(object sender, SizeChangedEventArgs e)
         {
             ToastMsg.Width = 480 - 10 - e.NewSize.Width;
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 }
