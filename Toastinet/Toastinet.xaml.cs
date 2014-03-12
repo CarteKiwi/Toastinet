@@ -14,6 +14,7 @@ namespace Toastinet
     {
         #region Private variables
         private TimeSpan _interval = new TimeSpan(0, 0, 3);
+        private bool _isLoaded;
         #endregion
 
         #region ShowLogo (Default: true)
@@ -72,12 +73,12 @@ namespace Toastinet
                 if (toast.ToastMsg != null)
                     toast.ToastMsg.Text = e.NewValue.ToString();
 
-                VisualStateManager.GoToState(toast, toast.AnimationType + "Opened", true);
+                VisualStateManager.GoToState(toast, toast.GetValidAnimation() + "Opened", true);
 
                 var timer = new DispatcherTimer { Interval = toast._interval };
                 timer.Tick += (s, t) =>
                 {
-                    VisualStateManager.GoToState(toast, toast.AnimationType + "Closed", true);
+                    VisualStateManager.GoToState(toast, toast.GetValidAnimation() + "Closed", true);
                     timer.Stop();
                     toast.Message = String.Empty;
                 };
@@ -166,31 +167,69 @@ namespace Toastinet
         #endregion
 
         #region AnimationType
-        public string AnimationType
+        /// <summary>
+        /// Define the animation type: Vertical or Rotation
+        /// </summary>
+        public AnimationType AnimationType
         {
-            get { return (string)GetValue(AnimationTypeProperty); }
+            get { return (AnimationType)GetValue(AnimationTypeProperty); }
             set { SetValue(AnimationTypeProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for AnimationType.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty AnimationTypeProperty =
-            DependencyProperty.Register("AnimationType", typeof(string), typeof(Toastinet), new PropertyMetadata("rotation", OnAnimationTypeChanged));
+            DependencyProperty.Register("AnimationType", typeof(AnimationType), typeof(Toastinet), new PropertyMetadata(global::Toastinet.AnimationType.Rotation, OnAnimationTypeChanged));
 
         private static void OnAnimationTypeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var toast = (Toastinet)d;
-            var animType = e.NewValue.ToString().ToLower();
+            AnimationType animType;
 
-            if (System.String.CompareOrdinal(animType, "translation") == 0 && System.String.CompareOrdinal(animType, "rotation") == 0)
-                toast.AnimationType = "rotation";
+            if (!Enum.TryParse(e.NewValue.ToString(), out animType))
+                toast.AnimationType = global::Toastinet.AnimationType.Rotation;
             else
             {
-                toast.AnimationType = animType.ToLower();
+                toast.AnimationType = animType;
+            }
+
+            if (toast._isLoaded)
+            {
+                toast.PropertyChanged(d, new PropertyChangedEventArgs("WidthToClosed"));
+                toast.PropertyChanged(d, new PropertyChangedEventArgs("WidthToOpened"));
+                var projection = toast.MainGrid.Projection as PlaneProjection;
+                if (projection != null)
+                {
+                    projection.GlobalOffsetX = toast.WidthToOpened;
+                }
             }
         }
 
         #endregion
 
+        public int WidthToClosed
+        {
+            get
+            {
+                var width = 480;
+                if (this.AnimationType == global::Toastinet.AnimationType.LeftToLeft ||
+                    this.AnimationType == global::Toastinet.AnimationType.RightToLeft)
+                    width = -480;
+
+                return width;
+            }
+        }
+
+        public int WidthToOpened
+        {
+            get
+            {
+                var width = 480;
+                if (this.AnimationType == global::Toastinet.AnimationType.LeftToRight ||
+                    this.AnimationType == global::Toastinet.AnimationType.LeftToLeft)
+                    width = -480;
+
+                return width;
+            }
+        }
 
         /// <summary>
         /// Constructor
@@ -198,10 +237,27 @@ namespace Toastinet
         public Toastinet()
         {
             InitializeComponent();
+            this.DataContext = this;
             this.Loaded += (s, e) =>
             {
-                VisualStateManager.GoToState(this, AnimationType + "Closed", false);
+                _isLoaded = true;
+                if (PropertyChanged != null)
+                {
+                    PropertyChanged(this, new PropertyChangedEventArgs("WidthToClosed"));
+                    PropertyChanged(this, new PropertyChangedEventArgs("WidthToOpened"));
+                }
+
+                VisualStateManager.GoToState(this, GetValidAnimation() + "Closed", false);
             };
+        }
+
+        private AnimationType GetValidAnimation()
+        {
+            var anim = this.AnimationType;
+            if (anim == global::Toastinet.AnimationType.RightToLeft || anim == AnimationType.LeftToLeft || anim == AnimationType.RightToRight)
+                anim = global::Toastinet.AnimationType.LeftToRight;
+
+            return anim;
         }
 
         private void OnFirstContainerChanged(object sender, SizeChangedEventArgs e)

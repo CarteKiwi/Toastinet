@@ -32,10 +32,18 @@
                              Height="105"
                              ShowLogo="False"
                              FontSize="25"
-                             AnimationType="Translation"
+                             AnimationType="Vertical"
                              Background="#2ecc71"
                              Foreground="Black"
                              TextWrapping="Wrap"
+                             Canvas.ZIndex="1"
+                             VerticalAlignment="Top" />
+
+        <toastinet:Toastinet x:Name="Toast3"
+                             Duration="1"
+                             Title="Toastinet"
+                             AnimationType="RightToLeft"
+                             Image="/Assets/ApplicationIcon.png"
                              Canvas.ZIndex="1"
                              VerticalAlignment="Top" />
         
@@ -49,9 +57,15 @@
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
             
             <StackPanel>
-                <Button Content="Basic Toast (logo + short message)" Click="OnBasicToast" Height="80"></Button>
+                <Button Content="basic with rotation" Click="OnBasicToast" Height="80"></Button>
 
-                <Button Content="Toast with text wrapping (no logo)" Click="OnBasicToast2" Height="80"></Button>
+                <Button Content="text wrapping from top" Click="OnBasicToast2" Height="80"></Button>
+
+                <Button Content="animation LeftToLeft" Click="OnL2L" Height="80"></Button>
+
+                <Button Content="animation RightToRight" Click="OnR2R" Height="80"></Button>
+
+                <Button Content="animation LeftToRight" Click="OnL2R" Height="80"></Button>
             </StackPanel>
             
         </Grid>
