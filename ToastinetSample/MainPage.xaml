@@ -1,4 +1,5 @@
 ﻿<phone:PhoneApplicationPage
+    x:Name="PageRoot"
     x:Class="ToastinetSample.MainPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -23,6 +24,7 @@
 
         <toastinet:Toastinet x:Name="Toast"
                              Title="Toastinet"
+                             Message="{Binding FirstToastMsg, ElementName=PageRoot, Mode=TwoWay}"
                              Image="/Assets/ApplicationIcon.png"
                              Canvas.ZIndex="1"
                              VerticalAlignment="Top" />
@@ -32,6 +34,7 @@
                              Height="105"
                              ShowLogo="False"
                              FontSize="25"
+                             TextHAlignment="Center"
                              AnimationType="Vertical"
                              Background="#2ecc71"
                              Foreground="Black"

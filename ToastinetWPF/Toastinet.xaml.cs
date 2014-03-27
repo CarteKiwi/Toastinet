@@ -5,7 +5,7 @@ using System.Windows.Media;
 using System.Windows.Threading;
 
 
-namespace Toastinet
+namespace ToastinetWPF
 {
     /// <summary>
     /// Toastinet is an UserControl developed by Guillaume DEMICHELI shared on CodePlex via Nuget for Windows Phone
@@ -59,14 +59,15 @@ namespace Toastinet
         }
 
         public static readonly DependencyProperty MessageProperty =
-            DependencyProperty.Register("Message", typeof(string), typeof(Toastinet), new PropertyMetadata(String.Empty, OnTextChanged));
+            DependencyProperty.Register("Message", typeof(string), typeof(Toastinet), new PropertyMetadata(String.Empty, OnTextChanged, OnTextSet));
 
-        private static void OnTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        // This is the CoerceValue method, always called even if the value does not change
+        private static object OnTextSet(DependencyObject d, object baseValue)
         {
             try
             {
-                if (e.NewValue == null || String.IsNullOrEmpty(e.NewValue.ToString()))
-                    return;
+                if (baseValue == null || String.IsNullOrEmpty(baseValue.ToString()))
+                    return baseValue;
 
                 var toast = (Toastinet)d;
 
@@ -80,8 +81,16 @@ namespace Toastinet
                 };
                 timer.Start();
             }
-            catch { }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
+            return baseValue;
         }
+
+        private static void OnTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) { }
+
         #endregion
 
         #region Duration (Default: 3s)
@@ -139,7 +148,7 @@ namespace Toastinet
         }
 
         public new static readonly DependencyProperty HeightProperty =
-            DependencyProperty.Register("Height", typeof(int), typeof(Toastinet), new PropertyMetadata(50));
+            DependencyProperty.Register("Height", typeof(int), typeof(Toastinet), new PropertyMetadata(30));
 
         #endregion
 
@@ -173,7 +182,7 @@ namespace Toastinet
         }
 
         public static readonly DependencyProperty AnimationTypeProperty =
-            DependencyProperty.Register("AnimationType", typeof(AnimationType), typeof(Toastinet), new PropertyMetadata(global::Toastinet.AnimationType.Rotation, OnAnimationTypeChanged));
+            DependencyProperty.Register("AnimationType", typeof(AnimationType), typeof(Toastinet), new PropertyMetadata(AnimationType.Rotation, OnAnimationTypeChanged));
 
         private static void OnAnimationTypeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -181,7 +190,7 @@ namespace Toastinet
             AnimationType animType;
 
             if (!Enum.TryParse(e.NewValue.ToString(), out animType))
-                toast.AnimationType = global::Toastinet.AnimationType.Rotation;
+                toast.AnimationType = AnimationType.Rotation;
             else
             {
                 toast.AnimationType = animType;
@@ -191,10 +200,14 @@ namespace Toastinet
             {
                 toast.PropertyChanged(d, new PropertyChangedEventArgs("WidthToClosed"));
                 toast.PropertyChanged(d, new PropertyChangedEventArgs("WidthToOpened"));
-                var projection = toast.MainGrid.Projection as PlaneProjection;
-                if (projection != null)
+                var tg = toast.MainGrid.RenderTransform as TransformGroup;
+                if (tg != null)
                 {
-                    projection.GlobalOffsetX = toast.WidthToOpened;
+                    var translation = tg.Children[1] as TranslateTransform;
+                    if (translation != null)
+                    {
+                        translation.X = toast.WidthToOpened;
+                    }
                 }
             }
         }
@@ -206,8 +219,8 @@ namespace Toastinet
             get
             {
                 var width = (int)LayoutRoot.ActualWidth;
-                if (this.AnimationType == global::Toastinet.AnimationType.LeftToLeft ||
-                    this.AnimationType == global::Toastinet.AnimationType.RightToLeft)
+                if (this.AnimationType == AnimationType.LeftToLeft ||
+                    this.AnimationType == AnimationType.RightToLeft)
                     width = -(int)LayoutRoot.ActualWidth;
 
                 return width;
@@ -219,8 +232,8 @@ namespace Toastinet
             get
             {
                 var width = (int)LayoutRoot.ActualWidth;
-                if (this.AnimationType == global::Toastinet.AnimationType.LeftToRight ||
-                    this.AnimationType == global::Toastinet.AnimationType.LeftToLeft)
+                if (this.AnimationType == AnimationType.LeftToRight ||
+                    this.AnimationType == AnimationType.LeftToLeft)
                     width = -(int)LayoutRoot.ActualWidth;
 
                 return width;
@@ -233,9 +246,11 @@ namespace Toastinet
         public Toastinet()
         {
             InitializeComponent();
-            this.DataContext = this;
+
             this.Loaded += (s, e) =>
             {
+                this.DataContext = this;
+
                 _isLoaded = true;
                 if (PropertyChanged != null)
                 {
@@ -250,8 +265,8 @@ namespace Toastinet
         private AnimationType GetValidAnimation()
         {
             var anim = this.AnimationType;
-            if (anim == global::Toastinet.AnimationType.RightToLeft || anim == AnimationType.LeftToLeft || anim == AnimationType.RightToRight)
-                anim = global::Toastinet.AnimationType.LeftToRight;
+            if (anim == AnimationType.RightToLeft || anim == AnimationType.LeftToLeft || anim == AnimationType.RightToRight)
+                anim = AnimationType.LeftToRight;
 
             return anim;
         }
@@ -262,13 +277,5 @@ namespace Toastinet
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
-
-        private void SbCompleted(object sender, EventArgs e)
-        {
-            // Force the property to be changed even if the user don't change the message value
-            // It's done in this callback to avoid text disappear (set to empty) before the closing animation is completed
-            // Not sure it's a good way to do it (it was done with the CoerceValue in WPF)
-            this.Message = String.Empty;
-        }
     }
 }
