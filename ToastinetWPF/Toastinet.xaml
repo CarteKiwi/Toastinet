@@ -45,6 +45,13 @@
                 <VisualState x:Name="RotationClosed">
                     <Storyboard>
                         <DoubleAnimation Duration="0" To="90" Storyboard.TargetProperty="(UIElement.RenderTransform).Children[0].Angle" Storyboard.TargetName="MainGrid" d:IsOptimized="True"/>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="MainGrid">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <Visibility>Collapsed</Visibility>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
                     </Storyboard>
                 </VisualState>
                 <VisualState x:Name="RotationOpened"/>
@@ -73,6 +80,13 @@
                 <VisualState x:Name="VerticalClosed">
                     <Storyboard>
                         <DoubleAnimation Duration="0" To="{Binding Data.InvertedHeight, Source={StaticResource Proxy}}" Storyboard.TargetProperty="(UIElement.RenderTransform).Children[1].Y" Storyboard.TargetName="MainGrid" d:IsOptimized="True"/>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="MainGrid">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <Visibility>Collapsed</Visibility>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
                     </Storyboard>
                 </VisualState>
                 <VisualState x:Name="VerticalOpened"/>
@@ -101,11 +115,25 @@
                 <VisualState x:Name="LeftToRightClosed">
                     <Storyboard>
                         <DoubleAnimation Duration="0" From="0" To="{Binding Data.WidthToOpened, Source={StaticResource Proxy}}" Storyboard.TargetProperty="(UIElement.RenderTransform).Children[1].X" Storyboard.TargetName="MainGrid" d:IsOptimized="True"/>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="MainGrid">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <Visibility>Collapsed</Visibility>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
                     </Storyboard>
                 </VisualState>
                 <VisualState x:Name="LeftToRightOpened">
                     <Storyboard>
                         <DoubleAnimation Duration="0" To="0" Storyboard.TargetProperty="(UIElement.RenderTransform).Children[1].X" Storyboard.TargetName="MainGrid" d:IsOptimized="True"/>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="MainGrid">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <Visibility>Visible</Visibility>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
                     </Storyboard>
                 </VisualState>
             </VisualStateGroup>
