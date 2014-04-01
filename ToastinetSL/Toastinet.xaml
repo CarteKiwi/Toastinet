@@ -1,0 +1,170 @@
+﻿<UserControl 
+    x:Name="ToastRoot"
+    x:Class="ToastinetSL.Toastinet"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="100" d:DesignWidth="480" 
+    HorizontalContentAlignment="Stretch">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources/ApplicationStyles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid x:Name="LayoutRoot" Background="Transparent" Canvas.ZIndex="1">
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="RotationGroup">
+                <VisualStateGroup.Transitions>
+                    <VisualTransition From="RotationClosed" GeneratedDuration="0:0:1.5" To="RotationOpened">
+                        <VisualTransition.GeneratedEasingFunction>
+                            <ElasticEase EasingMode="EaseOut"/>
+                        </VisualTransition.GeneratedEasingFunction>
+                    </VisualTransition>
+                    <VisualTransition From="RotationOpened" GeneratedDuration="0:0:1" To="RotationClosed">
+                        <VisualTransition.GeneratedEasingFunction>
+                            <ElasticEase EasingMode="EaseIn"/>
+                        </VisualTransition.GeneratedEasingFunction>
+                        <Storyboard Completed="SbCompleted">
+                            <DoubleAnimation Duration="0:0:1" To="0" Storyboard.TargetProperty="(UIElement.Projection).(PlaneProjection.RotationX)" Storyboard.TargetName="MainGrid"/>
+                            <DoubleAnimation Duration="0:0:1" To="{Binding InvertedHeight, ElementName=ToastRoot}" Storyboard.TargetProperty="(UIElement.Projection).(PlaneProjection.GlobalOffsetY)" Storyboard.TargetName="MainGrid" d:IsOptimized="True">
+                                <DoubleAnimation.EasingFunction>
+                                    <ElasticEase EasingMode="EaseIn" Oscillations="1" Springiness="3"/>
+                                </DoubleAnimation.EasingFunction>
+                            </DoubleAnimation>
+                        </Storyboard>
+                    </VisualTransition>
+                </VisualStateGroup.Transitions>
+                <VisualState x:Name="RotationClosed">
+                    <Storyboard>
+                        <DoubleAnimation Duration="0" To="90" Storyboard.TargetProperty="(UIElement.Projection).(PlaneProjection.RotationX)" Storyboard.TargetName="MainGrid" d:IsOptimized="True"/>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="MainGrid">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <Visibility>Collapsed</Visibility>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                    </Storyboard>
+                </VisualState>
+                <VisualState x:Name="RotationOpened"/>
+            </VisualStateGroup>
+
+            <VisualStateGroup x:Name="VerticalGroup">
+                <VisualStateGroup.Transitions>
+                    <VisualTransition From="VerticalClosed" GeneratedDuration="0:0:1.5" To="VerticalOpened">
+                        <VisualTransition.GeneratedEasingFunction>
+                            <ElasticEase EasingMode="EaseOut" Oscillations="1" Springiness="6"/>
+                        </VisualTransition.GeneratedEasingFunction>
+                    </VisualTransition>
+                    <VisualTransition From="VerticalOpened" GeneratedDuration="0:0:1" To="VerticalClosed">
+                        <VisualTransition.GeneratedEasingFunction>
+                            <ElasticEase EasingMode="EaseIn"/>
+                        </VisualTransition.GeneratedEasingFunction>
+                        <Storyboard Completed="SbCompleted">
+                            <DoubleAnimation Duration="0:0:1" To="{Binding InvertedHeight, ElementName=ToastRoot}" Storyboard.TargetProperty="(UIElement.Projection).(PlaneProjection.GlobalOffsetY)" Storyboard.TargetName="MainGrid" d:IsOptimized="True">
+                                <DoubleAnimation.EasingFunction>
+                                    <ElasticEase EasingMode="EaseIn" Oscillations="1" Springiness="6"/>
+                                </DoubleAnimation.EasingFunction>
+                            </DoubleAnimation>
+                        </Storyboard>
+                    </VisualTransition>
+                </VisualStateGroup.Transitions>
+                <VisualState x:Name="VerticalClosed">
+                    <Storyboard>
+                        <DoubleAnimation Duration="0" To="{Binding InvertedHeight, ElementName=ToastRoot}" Storyboard.TargetProperty="(UIElement.Projection).(PlaneProjection.GlobalOffsetY)" Storyboard.TargetName="MainGrid" d:IsOptimized="True"/>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="MainGrid">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <Visibility>Collapsed</Visibility>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                    </Storyboard>
+                </VisualState>
+                <VisualState x:Name="VerticalOpened"/>
+            </VisualStateGroup>
+
+            <VisualStateGroup x:Name="LeftToRightGroup">
+                <VisualStateGroup.Transitions>
+                    <VisualTransition From="LeftToRightClosed" GeneratedDuration="0:0:1.5" To="LeftToRightOpened">
+                        <VisualTransition.GeneratedEasingFunction>
+                            <ElasticEase EasingMode="EaseOut" Oscillations="1" Springiness="10"/>
+                        </VisualTransition.GeneratedEasingFunction>
+                    </VisualTransition>
+                    <VisualTransition From="LeftToRightOpened" GeneratedDuration="0:0:1" To="LeftToRightClosed">
+                        <VisualTransition.GeneratedEasingFunction>
+                            <ElasticEase EasingMode="EaseIn"/>
+                        </VisualTransition.GeneratedEasingFunction>
+                        <Storyboard Completed="SbCompleted">
+                            <DoubleAnimation Duration="0:0:1" To="{Binding WidthToClosed, ElementName=ToastRoot}" Storyboard.TargetProperty="(UIElement.Projection).(PlaneProjection.GlobalOffsetX)" Storyboard.TargetName="MainGrid" d:IsOptimized="True">
+                                <DoubleAnimation.EasingFunction>
+                                    <ElasticEase EasingMode="EaseIn" Oscillations="1" Springiness="10"/>
+                                </DoubleAnimation.EasingFunction>
+                            </DoubleAnimation>
+                        </Storyboard>
+                    </VisualTransition>
+                </VisualStateGroup.Transitions>
+                <VisualState x:Name="LeftToRightClosed">
+                    <Storyboard>
+                        <DoubleAnimation Duration="0" From="0" To="{Binding WidthToOpened, ElementName=ToastRoot}" Storyboard.TargetProperty="(UIElement.Projection).(PlaneProjection.GlobalOffsetX)" Storyboard.TargetName="MainGrid" d:IsOptimized="True"/>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="MainGrid">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <Visibility>Collapsed</Visibility>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                    </Storyboard>
+                </VisualState>
+                <VisualState x:Name="LeftToRightOpened">
+                    <Storyboard>
+                        <DoubleAnimation Duration="0" To="0" Storyboard.TargetProperty="(UIElement.Projection).(PlaneProjection.GlobalOffsetX)" Storyboard.TargetName="MainGrid" d:IsOptimized="True"/>
+                    </Storyboard>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+        <Grid x:Name="MainGrid" Height="{Binding Height, ElementName=ToastRoot}" 
+              Background="{Binding Background, ElementName=ToastRoot}"
+              Canvas.ZIndex="1">
+            <Grid.Projection>
+                <PlaneProjection/>
+            </Grid.Projection>
+
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="{Binding TextHAlignment, ElementName=ToastRoot}">
+
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center"
+                            SizeChanged="OnFirstContainerChanged">
+                    <Image Source="{Binding Image, ElementName=ToastRoot}" 
+                           HorizontalAlignment="Left"
+                           Margin="20,0,0,0"
+                           Height="30" Width="30"
+                           Visibility="{Binding ShowLogo, ElementName=ToastRoot, Converter={StaticResource BoolVisibilityConverter}}"/>
+                    <TextBlock Text="{Binding Title, ElementName=ToastRoot}" Foreground="{Binding Foreground, ElementName=ToastRoot}"
+                               FontWeight="Bold"
+                               VerticalAlignment="Center"
+                               Margin="10,0,0,0"
+                               Visibility="{Binding ShowLogo, ElementName=ToastRoot, Converter={StaticResource BoolVisibilityConverter}}"/>
+                    <TextBlock Margin="5,0,0,0" x:Name="Graduation"
+                               Style="{StaticResource TextFontStyle}"/>
+                </StackPanel>
+
+                <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Center">
+                    <TextBlock x:Name="ToastMsg"
+                               Text="{Binding Message, ElementName=ToastRoot}" Foreground="{Binding Foreground, ElementName=ToastRoot}"
+                               TextWrapping="{Binding TextWrapping, ElementName=ToastRoot}"
+                               FontWeight="Thin"
+                               VerticalAlignment="Center"
+                               Margin="10,0,0,0"/>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</UserControl>
