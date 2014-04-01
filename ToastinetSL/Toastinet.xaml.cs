@@ -5,7 +5,7 @@ using System.Windows.Media;
 using System.Windows.Threading;
 
 
-namespace ToastinetWPF
+namespace ToastinetSL
 {
     /// <summary>
     /// Toastinet is an UserControl developed by Guillaume DEMICHELI shared on CodePlex via Nuget for Windows Phone
@@ -17,7 +17,7 @@ namespace ToastinetWPF
         private bool _isLoaded;
         #endregion
 
-        #region ShowLogo
+        #region ShowLogo (Default: true)
         /// <summary>
         /// Show the image bound to the control (default is True)
         /// </summary>
@@ -62,15 +62,14 @@ namespace ToastinetWPF
         }
 
         public static readonly DependencyProperty MessageProperty =
-            DependencyProperty.Register("Message", typeof(string), typeof(Toastinet), new PropertyMetadata(String.Empty, OnTextChanged, OnTextSet));
+            DependencyProperty.Register("Message", typeof(string), typeof(Toastinet), new PropertyMetadata(String.Empty, OnTextChanged));
 
-        // This is the CoerceValue method, always called even if the value does not change
-        private static object OnTextSet(DependencyObject d, object baseValue)
+        private static void OnTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             try
             {
-                if (baseValue == null || String.IsNullOrEmpty(baseValue.ToString()))
-                    return baseValue;
+                if (e.NewValue == null || String.IsNullOrEmpty(e.NewValue.ToString()))
+                    return;
 
                 var toast = (Toastinet)d;
 
@@ -84,16 +83,8 @@ namespace ToastinetWPF
                 };
                 timer.Start();
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-
-            return baseValue;
+            catch { }
         }
-
-        private static void OnTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) { }
-
         #endregion
 
         #region Duration (Default: 3s)
@@ -151,7 +142,7 @@ namespace ToastinetWPF
         }
 
         public new static readonly DependencyProperty HeightProperty =
-            DependencyProperty.Register("Height", typeof(int), typeof(Toastinet), new PropertyMetadata(30));
+            DependencyProperty.Register("Height", typeof(int), typeof(Toastinet), new PropertyMetadata(50));
 
         #endregion
 
@@ -203,14 +194,10 @@ namespace ToastinetWPF
             {
                 toast.PropertyChanged(d, new PropertyChangedEventArgs("WidthToClosed"));
                 toast.PropertyChanged(d, new PropertyChangedEventArgs("WidthToOpened"));
-                var tg = toast.MainGrid.RenderTransform as TransformGroup;
-                if (tg != null)
+                var projection = toast.MainGrid.Projection as PlaneProjection;
+                if (projection != null)
                 {
-                    var translation = tg.Children[1] as TranslateTransform;
-                    if (translation != null)
-                    {
-                        translation.X = toast.WidthToOpened;
-                    }
+                    projection.GlobalOffsetX = toast.WidthToOpened;
                 }
             }
         }
@@ -249,11 +236,9 @@ namespace ToastinetWPF
         public Toastinet()
         {
             InitializeComponent();
-
+            this.DataContext = this;
             this.Loaded += (s, e) =>
             {
-                this.DataContext = this;
-
                 _isLoaded = true;
                 if (PropertyChanged != null)
                 {
@@ -280,5 +265,13 @@ namespace ToastinetWPF
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        private void SbCompleted(object sender, EventArgs e)
+        {
+            // Force the property to be changed even if the user don't change the message value
+            // It's done in this callback to avoid text disappear (set to empty) before the closing animation is completed
+            // Not sure it's a good way to do it (it was done with the CoerceValue in WPF)
+            this.Message = String.Empty;
+        }
     }
 }

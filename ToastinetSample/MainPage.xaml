@@ -60,7 +60,7 @@
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
             
             <StackPanel>
-                <Button Content="basic with rotation" Click="OnBasicToast" Height="80"></Button>
+                <Button Content="basic with bound data" Click="OnBasicToast" Height="80"></Button>
 
                 <Button Content="text wrapping from top" Click="OnBasicToast2" Height="80"></Button>
 
