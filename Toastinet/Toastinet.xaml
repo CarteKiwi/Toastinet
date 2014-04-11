@@ -9,7 +9,7 @@
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
-    d:DesignHeight="100" d:DesignWidth="480" 
+    d:DesignHeight="100" d:DesignWidth="480"
     HorizontalContentAlignment="Stretch">
 
     <UserControl.Resources>

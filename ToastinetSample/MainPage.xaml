@@ -24,7 +24,7 @@
 
         <toastinet:Toastinet x:Name="Toast"
                              Title="Toastinet"
-                             Message="{Binding FirstToastMsg, ElementName=PageRoot, Mode=TwoWay}"
+                             Message="{Binding FirstToastMsg, Mode=TwoWay}"
                              Image="/Assets/ApplicationIcon.png"
                              Canvas.ZIndex="1"
                              VerticalAlignment="Top" />
