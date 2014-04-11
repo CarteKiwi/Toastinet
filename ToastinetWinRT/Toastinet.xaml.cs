@@ -229,7 +229,7 @@ namespace ToastinetWinRT
         public Toastinet()
         {
             InitializeComponent();
-            this.DataContext = this;
+            
             this.Loaded += (s, e) =>
             {
                 _isLoaded = true;

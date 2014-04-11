@@ -16,7 +16,7 @@
             </Grid.RowDefinitions>
 
             <toastinetSl:Toastinet x:Name="Toast"
-                                Message="{Binding Message, ElementName=PageRoot, Mode=TwoWay}"
+                                Message="{Binding Message, Mode=TwoWay}"
                                 Title="Toastinet"
                                 Image="/Assets/ApplicationIcon.png"
                                 Canvas.ZIndex="1"
