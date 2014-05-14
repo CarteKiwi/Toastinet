@@ -201,6 +201,17 @@ namespace Toastinet
 
         #endregion
 
+        #region Font
+        public new FontFamily FontFamily
+        {
+            get { return (FontFamily)GetValue(FontFamilyProperty); }
+            set { SetValue(FontFamilyProperty, value); }
+        }
+
+        public new static readonly DependencyProperty FontFamilyProperty =
+            DependencyProperty.Register("FontFamily", typeof(FontFamily), typeof(Toastinet), new PropertyMetadata(new FontFamily("Segoe UI")));
+        #endregion
+
         public int WidthToClosed
         {
             get

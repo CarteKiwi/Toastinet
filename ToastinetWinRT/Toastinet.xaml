@@ -149,6 +149,7 @@
                            Visibility="{Binding ShowLogo, ElementName=ToastRoot, Converter={StaticResource BoolVisibilityConverter}}"/>
                     <TextBlock Text="{Binding Title, ElementName=ToastRoot}" Foreground="{Binding Foreground, ElementName=ToastRoot}"
                                FontWeight="Bold"
+                               FontFamily="{Binding FontFamily, ElementName=ToastRoot}"
                                VerticalAlignment="Center"
                                Margin="10,0,0,0"
                                Visibility="{Binding ShowLogo, ElementName=ToastRoot, Converter={StaticResource BoolVisibilityConverter}}"/>
@@ -161,6 +162,7 @@
                                Text="{Binding Message, ElementName=ToastRoot}" Foreground="{Binding Foreground, ElementName=ToastRoot}"
                                TextWrapping="{Binding TextWrapping, ElementName=ToastRoot}"
                                FontWeight="Thin"
+                               FontFamily="{Binding FontFamily, ElementName=ToastRoot}"
                                VerticalAlignment="Center"
                                Margin="10,0,0,0"/>
                 </StackPanel>
