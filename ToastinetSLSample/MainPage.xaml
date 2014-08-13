@@ -60,6 +60,7 @@
                     <Button Background="AliceBlue" Width="200" Margin="0,0,0,15" Content="animation LeftToLeft" Click="OnL2L"/>
                     <Button Background="AliceBlue" Width="200" Margin="0,0,0,15" Content="animation RightToRight" Click="OnR2R"/>
                     <Button Background="AliceBlue" Width="200" Margin="0,0,0,15" Content="animation LeftToRight" Click="OnL2R"/>
+                    <Button Background="AliceBlue" Width="200" Margin="0,0,0,15" Content="toast event" Click="OnEventToast" x:Name="ToastEventBtn"/>
                 </StackPanel>
 
             </Grid>

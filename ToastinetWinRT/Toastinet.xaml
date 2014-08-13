@@ -19,7 +19,7 @@
 
     <Grid x:Name="LayoutRoot" Background="Transparent" Canvas.ZIndex="1">
         <VisualStateManager.VisualStateGroups>
-            <VisualStateGroup x:Name="RotationGroup">
+            <VisualStateGroup x:Name="RotationGroup" CurrentStateChanging="OnCurrentStateChanging" CurrentStateChanged="OnCurrentStateChanged">
                 <VisualStateGroup.Transitions>
                     <VisualTransition From="RotationClosed" GeneratedDuration="0:0:1.5" To="RotationOpened">
                         <VisualTransition.GeneratedEasingFunction>
@@ -55,7 +55,7 @@
                 <VisualState x:Name="RotationOpened"/>
             </VisualStateGroup>
 
-            <VisualStateGroup x:Name="VerticalGroup">
+            <VisualStateGroup x:Name="VerticalGroup" CurrentStateChanging="OnCurrentStateChanging" CurrentStateChanged="OnCurrentStateChanged">
                 <VisualStateGroup.Transitions>
                     <VisualTransition From="VerticalClosed" GeneratedDuration="0:0:1.5" To="VerticalOpened">
                         <VisualTransition.GeneratedEasingFunction>
@@ -90,7 +90,7 @@
                 <VisualState x:Name="VerticalOpened"/>
             </VisualStateGroup>
 
-            <VisualStateGroup x:Name="LeftToRightGroup">
+            <VisualStateGroup x:Name="LeftToRightGroup" CurrentStateChanging="OnCurrentStateChanging" CurrentStateChanged="OnCurrentStateChanged">
                 <VisualStateGroup.Transitions>
                     <VisualTransition From="LeftToRightClosed" GeneratedDuration="0:0:1.5" To="LeftToRightOpened">
                         <VisualTransition.GeneratedEasingFunction>

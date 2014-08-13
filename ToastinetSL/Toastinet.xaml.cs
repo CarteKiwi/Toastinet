@@ -4,7 +4,6 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Threading;
 
-
 namespace ToastinetSL
 {
     /// <summary>
@@ -15,6 +14,26 @@ namespace ToastinetSL
         #region Private variables
         private TimeSpan _interval = new TimeSpan(0, 0, 3);
         private bool _isLoaded;
+        #endregion
+
+        #region Event closed
+        public delegate void ClosedEventHandler(object sender, VisualStateChangedEventArgs e);
+        public event ClosedEventHandler Closed;
+        public event ClosedEventHandler Closing;
+
+        private void OnCurrentStateChanged(object sender, VisualStateChangedEventArgs e)
+        {
+            if (e.NewState.Name.EndsWith("Closed"))
+                if (Closed != null)
+                    Closed(sender, e);
+        }
+
+        private void OnCurrentStateChanging(object sender, VisualStateChangedEventArgs e)
+        {
+            if (e.NewState.Name.EndsWith("Closed"))
+                if (Closing != null)
+                    Closing(sender, e);
+        }
         #endregion
 
         #region ShowLogo (Default: true)
@@ -236,7 +255,7 @@ namespace ToastinetSL
         public Toastinet()
         {
             InitializeComponent();
-            
+
             this.Loaded += (s, e) =>
             {
                 _isLoaded = true;

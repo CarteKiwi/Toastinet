@@ -70,6 +70,8 @@
                 <Button Content="animation RightToRight" Click="OnR2R" Height="80"></Button>
 
                 <Button Content="animation LeftToRight" Click="OnL2R" Height="80"></Button>
+
+                <Button Content="toast event" Click="OnEventToast" x:Name="ToastEventBtn"/>
             </StackPanel>
             
         </Grid>
