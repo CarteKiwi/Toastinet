@@ -17,6 +17,26 @@ namespace ToastinetWinRT
         private bool _isLoaded;
         #endregion
 
+        #region Event closed
+        public delegate void ClosedEventHandler(object sender, VisualStateChangedEventArgs e);
+        public event ClosedEventHandler Closed;
+        public event ClosedEventHandler Closing;
+
+        private void OnCurrentStateChanged(object sender, VisualStateChangedEventArgs e)
+        {
+            if (e.NewState.Name.EndsWith("Closed"))
+                if (Closed != null)
+                    Closed(sender, e);
+        }
+
+        private void OnCurrentStateChanging(object sender, VisualStateChangedEventArgs e)
+        {
+            if (e.NewState.Name.EndsWith("Closed"))
+                if (Closing != null)
+                    Closing(sender, e);
+        }
+        #endregion
+
         #region ShowLogo (Default: true)
         public bool ShowLogo
         {

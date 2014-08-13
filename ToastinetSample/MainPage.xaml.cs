@@ -1,20 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Net;
+﻿using System.ComponentModel;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Media;
-using System.Windows.Navigation;
-using Microsoft.Phone.Controls;
-using Microsoft.Phone.Shell;
 using Toastinet;
-using ToastinetSample.Resources;
 
 namespace ToastinetSample
 {
-    public partial class MainPage : PhoneApplicationPage, INotifyPropertyChanged
+    public partial class MainPage : INotifyPropertyChanged
     {
         private string _firstToastMsg;
         public string FirstToastMsg
@@ -66,6 +57,21 @@ namespace ToastinetSample
             this.Toast3.Foreground = new SolidColorBrush(Color.FromArgb(255, 155, 89, 182));
             this.Toast3.Background = new SolidColorBrush(Color.FromArgb(255, 236, 240, 241));
             this.Toast3.Message = "This toast goes from Left To Right";
+        }
+
+        private void OnEventToast(object sender, RoutedEventArgs e)
+        {
+            ToastEventBtn.Content = "== toast animating ==";
+            ToastEventBtn.IsEnabled = false;
+            this.Toast2.Message = "This toast is listening for closed event";
+            this.Toast2.Closed += ToastOnClosed;
+        }
+
+        private void ToastOnClosed(object sender, VisualStateChangedEventArgs visualStateChangedEventArgs)
+        {
+            this.Toast2.Closed -= ToastOnClosed;
+            ToastEventBtn.Content = "toast event";
+            ToastEventBtn.IsEnabled = true;
         }
 
         private void OnPropertyChanged(string name)

@@ -63,6 +63,21 @@ namespace ToastinetWinRTSample
             this.Toast3.Message = "This toast goes from Left To Right";
         }
 
+        private void OnEventToast(object sender, RoutedEventArgs e)
+        {
+            ToastEventBtn.Content = "== toast animating ==";
+            ToastEventBtn.IsEnabled = false;
+            this.Toast2.Message = "This toast is listening for closed event";
+            this.Toast2.Closed += ToastOnClosed;
+        }
+
+        private void ToastOnClosed(object sender, VisualStateChangedEventArgs visualStateChangedEventArgs)
+        {
+            this.Toast2.Closed -= ToastOnClosed;
+            ToastEventBtn.Content = "toast event";
+            ToastEventBtn.IsEnabled = true;
+        }
+
         private void OnPropertyChanged(string name)
         {
             if (PropertyChanged != null)

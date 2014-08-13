@@ -1,18 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using ToastinetWPF;
 
 namespace ToastinetWPFSample
@@ -71,6 +60,28 @@ namespace ToastinetWPFSample
             this.Toast3.Foreground = new SolidColorBrush(Color.FromArgb(255, 155, 89, 182));
             this.Toast3.Background = new SolidColorBrush(Color.FromArgb(255, 236, 240, 241));
             this.Toast3.Message = "This is a toast from left to right";
+        }
+
+        private void OnEventToast(object sender, RoutedEventArgs e)
+        {
+            ToastEventBtn.Content = "== toast animating ==";
+            ToastEventBtn.IsEnabled = false;
+            this.Toast2.Message = "This toast is listening for closing/closed events";
+            this.Toast2.Closing += ToastOnClosing;
+            this.Toast2.Closed += ToastOnClosed;
+        }
+
+        private void ToastOnClosing(object sender, VisualStateChangedEventArgs visualStateChangedEventArgs)
+        {
+            this.Toast2.Closing -= ToastOnClosing;
+            ToastEventBtn.Content = "toast closing...";
+        }
+
+        private void ToastOnClosed(object sender, VisualStateChangedEventArgs visualStateChangedEventArgs)
+        {
+            this.Toast2.Closed -= ToastOnClosed;
+            ToastEventBtn.Content = "toast event";
+            ToastEventBtn.IsEnabled = true;
         }
 
         private void OnPropertyChanged(string name)
