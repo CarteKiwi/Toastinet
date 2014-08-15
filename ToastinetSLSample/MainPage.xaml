@@ -19,7 +19,7 @@
                                    Message="{Binding Message, Mode=TwoWay}"
                                    Title="Toastinet"
                                    FontFamily="Andy"
-                                   Image="/Assets/ApplicationIcon.png"
+                                   Image="toast.png"
                                    Canvas.ZIndex="1"
                                    VerticalAlignment="Top" />
 
@@ -40,7 +40,7 @@
                                    Duration="1"
                                    Title="Toastinet"
                                    AnimationType="RightToLeft"
-                                   Image="/Assets/ApplicationIcon.png"
+                                   Image="toast.png"
                                    Canvas.ZIndex="1"
                                    VerticalAlignment="Top" />
 

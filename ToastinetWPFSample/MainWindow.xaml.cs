@@ -1,6 +1,8 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Threading;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using ToastinetWPF;
 
@@ -91,5 +93,59 @@ namespace ToastinetWPFSample
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        private void OnWindow(object sender, RoutedEventArgs e)
+        {
+            var stack = new StackPanel { Margin = new Thickness(50) };
+            stack.Children.Add(new TextBlock
+            {
+                Text = "Window is dynamically built. When content is rendered, a new toast is created.",
+                MaxWidth = 250,
+                TextWrapping = TextWrapping.Wrap
+            });
+
+            var g = new Grid();
+            g.Children.Add(stack);
+
+            var w = new Window
+            {
+                Name = "ToastinetChild",
+                Content = g,
+                SizeToContent = SizeToContent.WidthAndHeight,
+                Owner = this
+            };
+
+            w.ContentRendered += OnRuntime;
+            w.Show();
+        }
+
+        private Toastinet globalToast;
+        private void OnRuntime(object sender, EventArgs e)
+        {
+            if (globalToast == null)
+            {
+                // Initialize a new toast
+                globalToast = new Toastinet
+                {
+                    Owner = sender as FrameworkElement,
+                    Name = "Toast5",
+                    Duration = 1,
+                    Title = "Toastinet Runtime",
+                    AnimationType = AnimationType.Vertical,
+                    VerticalAlignment = VerticalAlignment.Top,
+                    Message = ""
+                };
+                //globalToast.Closed += (a, b) =>
+                //{
+                //    (globalToast.Owner as Window).Close();
+                //    (globalToast.Owner as Window).ContentRendered -= OnRuntime;
+                //};
+            }
+
+            globalToast.Owner = sender as FrameworkElement;
+            globalToast.Show("test");
+
+
+        }
     }
 }

@@ -1,6 +1,11 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Threading;
 
@@ -17,6 +22,81 @@ namespace ToastinetWPF
         private bool _isLoaded;
         #endregion
 
+        private bool IsFullyLoaded { get; set; }
+
+        #region Owner
+
+        private static FrameworkElement _previousOwner;
+        public FrameworkElement Owner
+        {
+            get { return (FrameworkElement)GetValue(OwnerProperty); }
+            set { SetValue(OwnerProperty, value); }
+        }
+
+        public static readonly DependencyProperty OwnerProperty =
+            DependencyProperty.Register("Owner", typeof(FrameworkElement), typeof(Toastinet), new PropertyMetadata(null, OnOwnerChanged));
+
+        private static void OnOwnerChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var toast = (Toastinet)d;
+
+            if (toast.Owner != null)
+            {
+                _previousOwner = e.OldValue as FrameworkElement;
+
+                ChangeOwner(toast, e.OldValue as FrameworkElement);
+            }
+        }
+
+        private static void ChangeOwner(Toastinet toast, FrameworkElement parent)
+        {
+            // Remove toast from parent
+            if (parent != null)
+            {
+                IEnumerable<UIElement> parentContainer = VisualTreeHelperUtil.GetControlsDecendant<Grid>(parent);
+                var grid = parentContainer.FirstOrDefault() as System.Windows.Controls.Grid;
+                if (grid != null)
+                    grid.Children.Remove(toast);
+                else
+                {
+                    var panel = parentContainer.FirstOrDefault() as StackPanel;
+                    if (panel != null)
+                        panel.Children.Remove(toast);
+                }
+            }
+
+            // Set ZIndex of the dynamic toast
+            Canvas.SetZIndex(toast, 99999);
+
+            // Try to find First Grid
+            IEnumerable<UIElement> container = VisualTreeHelperUtil.GetControlsDecendant<Grid>(toast.Owner);
+            if (container.FirstOrDefault() != null)
+            {
+                ((Grid)container.First()).Children.Insert(0, toast);
+            }
+            else
+            {
+                //no grid, is there a stackpanel
+                container = VisualTreeHelperUtil.GetControlsDecendant<StackPanel>(toast.Owner);
+                if (container.FirstOrDefault() != null)
+                {
+                    ((Grid)container.First()).Children.Insert(0, toast);
+                }
+                else
+                {
+                    throw new Exception("Unable to find window container of type Grid or StackPanel");
+                }
+            }
+
+            VisualStateManager.GoToState(toast, toast.GetValidAnimation() + "Opened", true);
+            VisualStateManager.GoToState(toast, toast.GetValidAnimation() + "Closed", true);
+        }
+        #endregion
+
+        #region Loaded event
+        public event RoutedEventHandler LLoaded = delegate { };
+        #endregion
+
         #region Event closed
         public delegate void ClosedEventHandler(object sender, VisualStateChangedEventArgs e);
         public event ClosedEventHandler Closed;
@@ -24,16 +104,23 @@ namespace ToastinetWPF
 
         private void OnCurrentStateChanged(object sender, VisualStateChangedEventArgs e)
         {
-            if (e.NewState.Name.EndsWith("Closed"))
+            if (IsFullyLoaded && e.NewState.Name.EndsWith("Closed"))
                 if (Closed != null)
-                    Closed(sender, e);
+                    Closed(this, e);
+
+            if (_isLoaded && e.OldState == null && !IsFullyLoaded && PropertyChanged != null)
+            {
+                IsFullyLoaded = true;
+                if (LLoaded != null)
+                    LLoaded(this, new RoutedEventArgs());
+            }
         }
 
         private void OnCurrentStateChanging(object sender, VisualStateChangedEventArgs e)
         {
-            if (e.NewState.Name.EndsWith("Closed"))
+            if (IsFullyLoaded && e.OldState != null && e.NewState.Name.EndsWith("Closed"))
                 if (Closing != null)
-                    Closing(sender, e);
+                    Closing(this, e);
         }
         #endregion
 
@@ -89,10 +176,17 @@ namespace ToastinetWPF
         {
             try
             {
-                if (baseValue == null || String.IsNullOrEmpty(baseValue.ToString()))
-                    return baseValue;
-
                 var toast = (Toastinet)d;
+
+                if (baseValue == null || String.IsNullOrEmpty(baseValue.ToString()))
+                {
+                    //if(!toast.IsLoaded)
+                    //    VisualStateManager.GoToState(toast, toast.GetValidAnimation() + "Closed", true);
+                    return baseValue;
+                }
+
+                //if (toast.Owner != null && _previousOwner != null)
+                //    ChangeOwner(toast, _previousOwner);
 
                 VisualStateManager.GoToState(toast, toast.GetValidAnimation() + "Opened", true);
 
@@ -186,12 +280,12 @@ namespace ToastinetWPF
         #endregion
 
         #region Image
-        public string Image
+        public ImageSource Image
         {
-            get { return (string)GetValue(ImageProperty); }
+            get { return (ImageSource)GetValue(ImageProperty); }
             set { SetValue(ImageProperty, value); }
         }
-        public static readonly DependencyProperty ImageProperty = DependencyProperty.Register("Image", typeof(string), typeof(Toastinet), new PropertyMetadata("/Toastinet;component/Assets/tile.png"));
+        public static readonly DependencyProperty ImageProperty = DependencyProperty.Register("Image", typeof(ImageSource), typeof(Toastinet));
         #endregion
 
         #region AnimationType
@@ -219,7 +313,7 @@ namespace ToastinetWPF
                 toast.AnimationType = animType;
             }
 
-            if (toast._isLoaded)
+            if (toast.PropertyChanged != null)
             {
                 toast.PropertyChanged(d, new PropertyChangedEventArgs("WidthToClosed"));
                 toast.PropertyChanged(d, new PropertyChangedEventArgs("WidthToOpened"));
@@ -270,19 +364,30 @@ namespace ToastinetWPF
         {
             InitializeComponent();
 
-            this.Loaded += (s, e) =>
+            base.Loaded += (s, e) =>
             {
-                this.DataContext = this;
-
-                _isLoaded = true;
                 if (PropertyChanged != null)
                 {
+                    _isLoaded = true;
+
                     PropertyChanged(this, new PropertyChangedEventArgs("WidthToClosed"));
                     PropertyChanged(this, new PropertyChangedEventArgs("WidthToOpened"));
+                    PropertyChanged(this, new PropertyChangedEventArgs("AnimationType"));
+                    VisualStateManager.GoToState(this, GetValidAnimation() + "Closed", false);
+
                 }
 
                 VisualStateManager.GoToState(this, GetValidAnimation() + "Closed", false);
             };
+
+        }
+
+        public void Show(string message = null)
+        {
+            if (!IsFullyLoaded)
+                this.LLoaded += (s, e) => Show(message);
+            else
+                this.Message = message ?? this.Message;
         }
 
         private AnimationType GetValidAnimation()
