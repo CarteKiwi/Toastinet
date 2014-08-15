@@ -26,14 +26,14 @@ namespace ToastinetWinRT
         {
             if (e.NewState.Name.EndsWith("Closed"))
                 if (Closed != null)
-                    Closed(sender, e);
+                    Closed(this, e);
         }
 
         private void OnCurrentStateChanging(object sender, VisualStateChangedEventArgs e)
         {
             if (e.NewState.Name.EndsWith("Closed"))
                 if (Closing != null)
-                    Closing(sender, e);
+                    Closing(this, e);
         }
         #endregion
 
@@ -174,12 +174,12 @@ namespace ToastinetWinRT
         #endregion
 
         #region Image
-        public string Image
+        public ImageSource Image
         {
-            get { return (string)GetValue(ImageProperty); }
+            get { return (ImageSource)GetValue(ImageProperty); }
             set { SetValue(ImageProperty, value); }
         }
-        public static readonly DependencyProperty ImageProperty = DependencyProperty.Register("Image", typeof(string), typeof(Toastinet), new PropertyMetadata("/Toastinet;component/Assets/tile.png"));
+        public static readonly DependencyProperty ImageProperty = DependencyProperty.Register("Image", typeof(ImageSource), typeof(Toastinet), new PropertyMetadata(null));
         #endregion
 
         #region AnimationType
