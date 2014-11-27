@@ -29,7 +29,8 @@
                              Canvas.ZIndex="1"
                              VerticalAlignment="Top" />
 
-        <toastinet:Toastinet x:Name="Toast2"
+        <toastinet:Toastinet Grid.Row="0"
+                             x:Name="Toast2"
                              Duration="1"
                              Height="105"
                              ShowLogo="False"

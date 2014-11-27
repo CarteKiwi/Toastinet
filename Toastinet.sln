@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30324.0
+VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Toastinet", "Toastinet\Toastinet.csproj", "{E6C9FFF3-3F9E-4108-B91D-6EA8210D67EA}"
 EndProject
@@ -32,7 +32,86 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Windows 8.1", "Windows 8.1"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WPF", "WPF", "{7DE2A09C-8843-4406-83BE-3761335A7227}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WinRT", "WinRT", "{22626D00-D161-487B-8B68-BFB2313A4650}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Toastinet.WinRT", "Toastinet.WinRT\Toastinet.WinRT.csproj", "{D77FA983-1900-4129-97EC-D6DC2D11EDBB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Toastinet.WinRT.Sample", "Toastinet.WinRT.Sample", "{D4BE1218-E063-410F-9EC0-C6047E06DC0C}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Toastinet.WinRT.Sample.Shared", "Toastinet.WinRT.Sample\Toastinet.WinRT.Sample.Shared\Toastinet.WinRT.Sample.Shared.shproj", "{8799F337-1514-43FB-AC04-ACFEC32FF5B0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Toastinet.WinRT.Sample.Windows", "Toastinet.WinRT.Sample\Toastinet.WinRT.Sample.Windows\Toastinet.WinRT.Sample.Windows.csproj", "{15F4C293-0008-445F-8B9E-9EEC36142A92}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Toastinet.WinRT.Sample.WindowsPhone", "Toastinet.WinRT.Sample\Toastinet.WinRT.Sample.WindowsPhone\Toastinet.WinRT.Sample.WindowsPhone.csproj", "{0AD52018-C6A4-4825-AC87-017469D3D964}"
+EndProject
 Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Toastinet.WinRT.Sample\Toastinet.WinRT.Sample.Shared\Toastinet.WinRT.Sample.Shared.projitems*{15f4c293-0008-445f-8b9e-9eec36142a92}*SharedItemsImports = 4
+		Toastinet.WinRT.Sample\Toastinet.WinRT.Sample.Shared\Toastinet.WinRT.Sample.Shared.projitems*{0ad52018-c6a4-4825-ac87-017469d3d964}*SharedItemsImports = 4
+		Toastinet.WinRT.Sample\Toastinet.WinRT.Sample.Shared\Toastinet.WinRT.Sample.Shared.projitems*{8799f337-1514-43fb-ac04-acfec32ff5b0}*SharedItemsImports = 13
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 15
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs33
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = Toastinet\\Toastinet.csproj
+		SccProjectTopLevelParentUniqueName1 = Toastinet.sln
+		SccProjectName1 = Toastinet
+		SccLocalPath1 = Toastinet
+		SccProjectUniqueName2 = ToastinetWPF\\ToastinetWPF.csproj
+		SccProjectTopLevelParentUniqueName2 = Toastinet.sln
+		SccProjectName2 = ToastinetWPF
+		SccLocalPath2 = ToastinetWPF
+		SccProjectUniqueName3 = ToastinetWPFSample\\ToastinetWPFSample.csproj
+		SccProjectTopLevelParentUniqueName3 = Toastinet.sln
+		SccProjectName3 = ToastinetWPFSample
+		SccLocalPath3 = ToastinetWPFSample
+		SccProjectUniqueName4 = ToastinetWinRTSample\\ToastinetWinRTSample.csproj
+		SccProjectTopLevelParentUniqueName4 = Toastinet.sln
+		SccProjectName4 = ToastinetWinRTSample
+		SccLocalPath4 = ToastinetWinRTSample
+		SccProjectUniqueName5 = ToastinetWinRT\\ToastinetWinRT.csproj
+		SccProjectTopLevelParentUniqueName5 = Toastinet.sln
+		SccProjectName5 = ToastinetWinRT
+		SccLocalPath5 = ToastinetWinRT
+		SccProjectUniqueName6 = ToastinetSLSample\\ToastinetSLSample.csproj
+		SccProjectTopLevelParentUniqueName6 = Toastinet.sln
+		SccProjectName6 = ToastinetSLSample
+		SccLocalPath6 = ToastinetSLSample
+		SccProjectUniqueName7 = ToastinetSLSample.Host\\ToastinetSLSample.Host.csproj
+		SccProjectTopLevelParentUniqueName7 = Toastinet.sln
+		SccProjectName7 = ToastinetSLSample.Host
+		SccLocalPath7 = ToastinetSLSample.Host
+		SccProjectUniqueName8 = ToastinetSL\\ToastinetSL.csproj
+		SccProjectTopLevelParentUniqueName8 = Toastinet.sln
+		SccProjectName8 = ToastinetSL
+		SccLocalPath8 = ToastinetSL
+		SccProjectUniqueName9 = ToastinetSample\\ToastinetSample.csproj
+		SccProjectTopLevelParentUniqueName9 = Toastinet.sln
+		SccProjectName9 = ToastinetSample
+		SccLocalPath9 = ToastinetSample
+		SccProjectUniqueName10 = Toastinet.WinRT\\Toastinet.WinRT.csproj
+		SccProjectTopLevelParentUniqueName10 = Toastinet.sln
+		SccProjectName10 = Toastinet.WinRT
+		SccLocalPath10 = Toastinet.WinRT
+		SccProjectUniqueName11 = Toastinet.WinRT.Sample\\Toastinet.WinRT.Sample.Shared\\Toastinet.WinRT.Sample.Shared.shproj
+		SccProjectTopLevelParentUniqueName11 = Toastinet.sln
+		SccProjectName11 = Toastinet.WinRT.Sample/Toastinet.WinRT.Sample.Shared
+		SccLocalPath11 = Toastinet.WinRT.Sample\\Toastinet.WinRT.Sample.Shared
+		SccProjectUniqueName12 = Toastinet.WinRT.Sample\\Toastinet.WinRT.Sample.Shared\\Toastinet.WinRT.Sample.Shared.projitems
+		SccProjectTopLevelParentUniqueName12 = Toastinet.sln
+		SccProjectName12 = Toastinet.WinRT.Sample/Toastinet.WinRT.Sample.Shared
+		SccLocalPath12 = Toastinet.WinRT.Sample\\Toastinet.WinRT.Sample.Shared
+		SccProjectUniqueName13 = Toastinet.WinRT.Sample\\Toastinet.WinRT.Sample.Windows\\Toastinet.WinRT.Sample.Windows.csproj
+		SccProjectTopLevelParentUniqueName13 = Toastinet.sln
+		SccProjectName13 = Toastinet.WinRT.Sample/Toastinet.WinRT.Sample.Windows
+		SccLocalPath13 = Toastinet.WinRT.Sample\\Toastinet.WinRT.Sample.Windows
+		SccProjectUniqueName14 = Toastinet.WinRT.Sample\\Toastinet.WinRT.Sample.WindowsPhone\\Toastinet.WinRT.Sample.WindowsPhone.csproj
+		SccProjectTopLevelParentUniqueName14 = Toastinet.sln
+		SccProjectName14 = Toastinet.WinRT.Sample/Toastinet.WinRT.Sample.WindowsPhone
+		SccLocalPath14 = Toastinet.WinRT.Sample\\Toastinet.WinRT.Sample.WindowsPhone
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|ARM = Debug|ARM
@@ -168,6 +247,60 @@ Global
 		{15DF25D8-8A64-4E0D-99A0-764C7C00DAE9}.Release|ARM.ActiveCfg = Release|Any CPU
 		{15DF25D8-8A64-4E0D-99A0-764C7C00DAE9}.Release|x64.ActiveCfg = Release|Any CPU
 		{15DF25D8-8A64-4E0D-99A0-764C7C00DAE9}.Release|x86.ActiveCfg = Release|Any CPU
+		{D77FA983-1900-4129-97EC-D6DC2D11EDBB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D77FA983-1900-4129-97EC-D6DC2D11EDBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D77FA983-1900-4129-97EC-D6DC2D11EDBB}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{D77FA983-1900-4129-97EC-D6DC2D11EDBB}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D77FA983-1900-4129-97EC-D6DC2D11EDBB}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D77FA983-1900-4129-97EC-D6DC2D11EDBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D77FA983-1900-4129-97EC-D6DC2D11EDBB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D77FA983-1900-4129-97EC-D6DC2D11EDBB}.Release|ARM.ActiveCfg = Release|Any CPU
+		{D77FA983-1900-4129-97EC-D6DC2D11EDBB}.Release|x64.ActiveCfg = Release|Any CPU
+		{D77FA983-1900-4129-97EC-D6DC2D11EDBB}.Release|x86.ActiveCfg = Release|Any CPU
+		{15F4C293-0008-445F-8B9E-9EEC36142A92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15F4C293-0008-445F-8B9E-9EEC36142A92}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15F4C293-0008-445F-8B9E-9EEC36142A92}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{15F4C293-0008-445F-8B9E-9EEC36142A92}.Debug|ARM.ActiveCfg = Debug|ARM
+		{15F4C293-0008-445F-8B9E-9EEC36142A92}.Debug|ARM.Build.0 = Debug|ARM
+		{15F4C293-0008-445F-8B9E-9EEC36142A92}.Debug|ARM.Deploy.0 = Debug|ARM
+		{15F4C293-0008-445F-8B9E-9EEC36142A92}.Debug|x64.ActiveCfg = Debug|x64
+		{15F4C293-0008-445F-8B9E-9EEC36142A92}.Debug|x64.Build.0 = Debug|x64
+		{15F4C293-0008-445F-8B9E-9EEC36142A92}.Debug|x64.Deploy.0 = Debug|x64
+		{15F4C293-0008-445F-8B9E-9EEC36142A92}.Debug|x86.ActiveCfg = Debug|x86
+		{15F4C293-0008-445F-8B9E-9EEC36142A92}.Debug|x86.Build.0 = Debug|x86
+		{15F4C293-0008-445F-8B9E-9EEC36142A92}.Debug|x86.Deploy.0 = Debug|x86
+		{15F4C293-0008-445F-8B9E-9EEC36142A92}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15F4C293-0008-445F-8B9E-9EEC36142A92}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15F4C293-0008-445F-8B9E-9EEC36142A92}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{15F4C293-0008-445F-8B9E-9EEC36142A92}.Release|ARM.ActiveCfg = Release|ARM
+		{15F4C293-0008-445F-8B9E-9EEC36142A92}.Release|ARM.Build.0 = Release|ARM
+		{15F4C293-0008-445F-8B9E-9EEC36142A92}.Release|ARM.Deploy.0 = Release|ARM
+		{15F4C293-0008-445F-8B9E-9EEC36142A92}.Release|x64.ActiveCfg = Release|x64
+		{15F4C293-0008-445F-8B9E-9EEC36142A92}.Release|x64.Build.0 = Release|x64
+		{15F4C293-0008-445F-8B9E-9EEC36142A92}.Release|x64.Deploy.0 = Release|x64
+		{15F4C293-0008-445F-8B9E-9EEC36142A92}.Release|x86.ActiveCfg = Release|x86
+		{15F4C293-0008-445F-8B9E-9EEC36142A92}.Release|x86.Build.0 = Release|x86
+		{15F4C293-0008-445F-8B9E-9EEC36142A92}.Release|x86.Deploy.0 = Release|x86
+		{0AD52018-C6A4-4825-AC87-017469D3D964}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0AD52018-C6A4-4825-AC87-017469D3D964}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0AD52018-C6A4-4825-AC87-017469D3D964}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{0AD52018-C6A4-4825-AC87-017469D3D964}.Debug|ARM.ActiveCfg = Debug|ARM
+		{0AD52018-C6A4-4825-AC87-017469D3D964}.Debug|ARM.Build.0 = Debug|ARM
+		{0AD52018-C6A4-4825-AC87-017469D3D964}.Debug|ARM.Deploy.0 = Debug|ARM
+		{0AD52018-C6A4-4825-AC87-017469D3D964}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{0AD52018-C6A4-4825-AC87-017469D3D964}.Debug|x86.ActiveCfg = Debug|x86
+		{0AD52018-C6A4-4825-AC87-017469D3D964}.Debug|x86.Build.0 = Debug|x86
+		{0AD52018-C6A4-4825-AC87-017469D3D964}.Debug|x86.Deploy.0 = Debug|x86
+		{0AD52018-C6A4-4825-AC87-017469D3D964}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0AD52018-C6A4-4825-AC87-017469D3D964}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0AD52018-C6A4-4825-AC87-017469D3D964}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{0AD52018-C6A4-4825-AC87-017469D3D964}.Release|ARM.ActiveCfg = Release|ARM
+		{0AD52018-C6A4-4825-AC87-017469D3D964}.Release|ARM.Build.0 = Release|ARM
+		{0AD52018-C6A4-4825-AC87-017469D3D964}.Release|ARM.Deploy.0 = Release|ARM
+		{0AD52018-C6A4-4825-AC87-017469D3D964}.Release|x64.ActiveCfg = Release|Any CPU
+		{0AD52018-C6A4-4825-AC87-017469D3D964}.Release|x86.ActiveCfg = Release|x86
+		{0AD52018-C6A4-4825-AC87-017469D3D964}.Release|x86.Build.0 = Release|x86
+		{0AD52018-C6A4-4825-AC87-017469D3D964}.Release|x86.Deploy.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -182,5 +315,10 @@ Global
 		{345EBB49-351D-4DBD-BD11-44C2ECAF99D8} = {D1F5EC43-145F-423B-9B83-4915E25D2E49}
 		{942E3518-204E-451C-B409-52FE47DD9176} = {D1F5EC43-145F-423B-9B83-4915E25D2E49}
 		{15DF25D8-8A64-4E0D-99A0-764C7C00DAE9} = {D1F5EC43-145F-423B-9B83-4915E25D2E49}
+		{D77FA983-1900-4129-97EC-D6DC2D11EDBB} = {22626D00-D161-487B-8B68-BFB2313A4650}
+		{D4BE1218-E063-410F-9EC0-C6047E06DC0C} = {22626D00-D161-487B-8B68-BFB2313A4650}
+		{8799F337-1514-43FB-AC04-ACFEC32FF5B0} = {D4BE1218-E063-410F-9EC0-C6047E06DC0C}
+		{15F4C293-0008-445F-8B9E-9EEC36142A92} = {D4BE1218-E063-410F-9EC0-C6047E06DC0C}
+		{0AD52018-C6A4-4825-AC87-017469D3D964} = {D4BE1218-E063-410F-9EC0-C6047E06DC0C}
 	EndGlobalSection
 EndGlobal
