@@ -21,6 +21,7 @@
                                    FontFamily="Andy"
                                    Image="toast.png"
                                    Canvas.ZIndex="1"
+                                   Queued="True"
                                    VerticalAlignment="Top" />
 
             <toastinetSl:Toastinet x:Name="Toast2"
@@ -63,6 +64,14 @@
                     <Button Background="AliceBlue" Width="200" Margin="0,0,0,15" Content="toast event" Click="OnEventToast" x:Name="ToastEventBtn"/>
                 </StackPanel>
 
+                <toastinetSl:Toastinet x:Name="Toast4"
+                             Duration="1"
+                             Message="Toasts are now clipped"
+                             ShowLogo="False"
+                             AnimationType="RightToLeft"
+                             Width="250"
+                             Clipped="True"
+                             VerticalAlignment="Bottom" />
             </Grid>
 
         </Grid>

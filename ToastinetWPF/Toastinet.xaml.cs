@@ -401,7 +401,14 @@ namespace ToastinetWPF
 
         private void OnFirstContainerChanged(object sender, SizeChangedEventArgs e)
         {
-            ToastMsg.Width = LayoutRoot.ActualWidth - 10 - e.NewSize.Width;
+            try
+            {
+                ToastMsg.Width = LayoutRoot.ActualWidth - 10 - e.NewSize.Width;
+            }
+            catch (Exception ex)
+            {
+                ToastMsg.Width = LayoutRoot.ActualWidth;
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
