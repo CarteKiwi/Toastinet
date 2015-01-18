@@ -7,11 +7,11 @@ using System.Resources;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Toastinet")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Toastinet for WP SL")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("G.D.M.")]
+[assembly: AssemblyCompany("Guillaume Demicheli")]
 [assembly: AssemblyProduct("Toastinet")]
-[assembly: AssemblyCopyright("Copyright ©  2014")]
+[assembly: AssemblyCopyright("Copyright © 2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -32,6 +32,6 @@ using System.Resources;
 //
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
-[assembly: AssemblyVersion("1.9")]
-[assembly: AssemblyFileVersion("1.9")]
+[assembly: AssemblyVersion("2.0")]
+[assembly: AssemblyFileVersion("2.0")]
 [assembly: NeutralResourcesLanguageAttribute("en-US")]

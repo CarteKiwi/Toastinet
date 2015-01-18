@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media;
@@ -75,6 +76,33 @@ namespace Toastinet.WinRT.Sample
             this.Toast2.Closed -= ToastOnClosed;
             ToastEventBtn.Content = "toast event";
             ToastEventBtn.IsEnabled = true;
+        }
+
+        private Toastinet globalToast;
+        private void OnRuntime(object sender, EventArgs e)
+        {
+            if (globalToast == null)
+            {
+                // Initialize a new toast
+                globalToast = new Toastinet
+                {
+                    //Owner = sender as FrameworkElement,
+                    Name = "Toast5",
+                    Duration = 1,
+                    Title = "Toastinet Runtime",
+                    AnimationType = AnimationType.Vertical,
+                    VerticalAlignment = VerticalAlignment.Top,
+                    Message = ""
+                };
+                //globalToast.Closed += (a, b) =>
+                //{
+                //    (globalToast.Owner as Window).Close();
+                //    (globalToast.Owner as Window).ContentRendered -= OnRuntime;
+                //};
+            }
+
+            //globalToast.Owner = sender as FrameworkElement;
+            //globalToast.Show("test");
         }
 
         private void OnPropertyChanged(string name)
