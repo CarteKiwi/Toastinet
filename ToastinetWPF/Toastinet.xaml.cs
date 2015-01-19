@@ -20,6 +20,7 @@ namespace ToastinetWPF
         #region Private variables
         private TimeSpan _interval = new TimeSpan(0, 0, 3);
         private bool _isLoaded;
+        Queue<string> _queue = new Queue<string>();
         #endregion
 
         private bool IsFullyLoaded { get; set; }
@@ -180,13 +181,8 @@ namespace ToastinetWPF
 
                 if (baseValue == null || String.IsNullOrEmpty(baseValue.ToString()))
                 {
-                    //if(!toast.IsLoaded)
-                    //    VisualStateManager.GoToState(toast, toast.GetValidAnimation() + "Closed", true);
                     return baseValue;
                 }
-
-                //if (toast.Owner != null && _previousOwner != null)
-                //    ChangeOwner(toast, _previousOwner);
 
                 VisualStateManager.GoToState(toast, toast.GetValidAnimation() + "Opened", true);
 
@@ -206,7 +202,58 @@ namespace ToastinetWPF
             return baseValue;
         }
 
-        private static void OnTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) { }
+        private static void OnTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            //try
+            //{
+            //    var toast = (Toastinet)d;
+
+            //    if (e.NewValue == null || String.IsNullOrEmpty(e.NewValue.ToString()) ||
+            //        (e.OldValue != null && toast.Queued && toast._queue.Contains(e.OldValue.ToString())))
+            //    {
+            //        if (e.NewValue == null || String.IsNullOrEmpty(e.NewValue.ToString()))
+            //            if (toast.Queued && toast._queue.Any())
+            //            {
+            //                toast.Message = toast._queue.Dequeue();
+            //            }
+            //        return;
+            //    }
+
+            //    if (e.OldValue != null && toast.Queued && !toast.GetCurrentState(toast.GetValidAnimation() + "Group").Name.Contains("Closed"))
+            //    {
+            //        toast._queue.Enqueue(e.NewValue.ToString());
+            //        toast.Message = e.OldValue.ToString();
+            //        return;
+            //    }
+
+            //    VisualStateManager.GoToState(toast, toast.GetValidAnimation() + "Opened", true);
+
+            //    var timer = new DispatcherTimer { Interval = toast._interval };
+            //    timer.Tick += (s, t) =>
+            //    {
+            //        VisualStateManager.GoToState(toast, toast.GetValidAnimation() + "Closed", true);
+            //        timer.Stop();
+            //    };
+            //    timer.Start();
+            //}
+            //catch { }
+        }
+
+        public VisualState GetCurrentState(string stateGroupName)
+        {
+            VisualStateGroup stateGroup1 = null;
+
+            IList<VisualStateGroup> list = (IList<VisualStateGroup>)VisualStateManager.GetVisualStateGroups(LayoutRoot as FrameworkElement);
+
+            foreach (var v in list)
+                if (v.Name == stateGroupName)
+                {
+                    stateGroup1 = v;
+                    break;
+                }
+
+            return stateGroup1.CurrentState;
+        }
 
         #endregion
 
@@ -331,6 +378,42 @@ namespace ToastinetWPF
 
         #endregion
 
+        #region Font
+        public new FontFamily FontFamily
+        {
+            get { return (FontFamily)GetValue(FontFamilyProperty); }
+            set { SetValue(FontFamilyProperty, value); }
+        }
+
+        public new static readonly DependencyProperty FontFamilyProperty =
+            DependencyProperty.Register("FontFamily", typeof(FontFamily), typeof(Toastinet), new PropertyMetadata(new FontFamily("Segoe UI")));
+        #endregion
+
+        #region Clipped
+        public bool Clipped
+        {
+            get { return (bool)GetValue(ClippedProperty); }
+            set { SetValue(ClippedProperty, value); }
+        }
+
+        public static readonly DependencyProperty ClippedProperty =
+            DependencyProperty.Register("Clipped", typeof(bool), typeof(Toastinet), new PropertyMetadata(false));
+        #endregion
+
+        #region Queued
+        /// <summary>
+        /// TODO : Not working right now. Almost done.
+        /// </summary>
+        private bool Queued
+        {
+            get { return (bool)GetValue(QueuedProperty); }
+            set { SetValue(QueuedProperty, value); }
+        }
+
+        public static readonly DependencyProperty QueuedProperty =
+            DependencyProperty.Register("Queued", typeof(bool), typeof(Toastinet), new PropertyMetadata(false));
+        #endregion
+
         public int WidthToClosed
         {
             get
@@ -409,8 +492,21 @@ namespace ToastinetWPF
             {
                 ToastMsg.Width = LayoutRoot.ActualWidth;
             }
+
+            if (Clipped)
+                LayoutRoot.Clip = new RectangleGeometry
+                {
+                    Rect = new Rect(0, 0, LayoutRoot.ActualWidth, LayoutRoot.ActualHeight + 10)
+                };
+            else
+                LayoutRoot.Clip = null;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        //private void SbCompleted(object sender, EventArgs e)
+        //{
+        //    Message = String.Empty;
+        //}
     }
 }

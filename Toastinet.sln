@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Toastinet", "Toastinet\Toastinet.csproj", "{E6C9FFF3-3F9E-4108-B91D-6EA8210D67EA}"
 EndProject
@@ -18,7 +18,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToastinetSLSample", "Toasti
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToastinetSLSample.Host", "ToastinetSLSample.Host\ToastinetSLSample.Host.csproj", "{942E3518-204E-451C-B409-52FE47DD9176}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToastinetSL", "ToastinetSL\ToastinetSL.csproj", "{15DF25D8-8A64-4E0D-99A0-764C7C00DAE9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Toastinet", "ToastinetSL\Toastinet.csproj", "{15DF25D8-8A64-4E0D-99A0-764C7C00DAE9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Windows Phone 8.0", "Windows Phone 8.0", "{C7BB3218-879A-44A6-BFD5-1EAF810F4207}"
 EndProject
@@ -28,7 +28,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WPF", "WPF", "{7DE2A09C-884
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WinRT", "WinRT", "{22626D00-D161-487B-8B68-BFB2313A4650}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Toastinet.WinRT", "Toastinet.WinRT\Toastinet.WinRT.csproj", "{D77FA983-1900-4129-97EC-D6DC2D11EDBB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Toastinet", "Toastinet.WinRT\Toastinet.csproj", "{D77FA983-1900-4129-97EC-D6DC2D11EDBB}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Toastinet.WinRT.Sample", "Toastinet.WinRT.Sample", "{D4BE1218-E063-410F-9EC0-C6047E06DC0C}"
 EndProject
@@ -69,34 +69,34 @@ Global
 		SccProjectTopLevelParentUniqueName5 = Toastinet.sln
 		SccProjectName5 = ToastinetSLSample.Host
 		SccLocalPath5 = ToastinetSLSample.Host
-		SccProjectUniqueName6 = ToastinetSL\\ToastinetSL.csproj
+		SccProjectUniqueName6 = ToastinetSample\\ToastinetSample.csproj
 		SccProjectTopLevelParentUniqueName6 = Toastinet.sln
-		SccProjectName6 = ToastinetSL
-		SccLocalPath6 = ToastinetSL
-		SccProjectUniqueName7 = ToastinetSample\\ToastinetSample.csproj
+		SccProjectName6 = ToastinetSample
+		SccLocalPath6 = ToastinetSample
+		SccProjectUniqueName7 = Toastinet.WinRT.Sample\\Toastinet.WinRT.Sample.Shared\\Toastinet.WinRT.Sample.Shared.shproj
 		SccProjectTopLevelParentUniqueName7 = Toastinet.sln
-		SccProjectName7 = ToastinetSample
-		SccLocalPath7 = ToastinetSample
-		SccProjectUniqueName8 = Toastinet.WinRT\\Toastinet.WinRT.csproj
+		SccProjectName7 = Toastinet.WinRT.Sample/Toastinet.WinRT.Sample.Shared
+		SccLocalPath7 = Toastinet.WinRT.Sample\\Toastinet.WinRT.Sample.Shared
+		SccProjectUniqueName8 = Toastinet.WinRT.Sample\\Toastinet.WinRT.Sample.Shared\\Toastinet.WinRT.Sample.Shared.projitems
 		SccProjectTopLevelParentUniqueName8 = Toastinet.sln
-		SccProjectName8 = Toastinet.WinRT
-		SccLocalPath8 = Toastinet.WinRT
-		SccProjectUniqueName9 = Toastinet.WinRT.Sample\\Toastinet.WinRT.Sample.Shared\\Toastinet.WinRT.Sample.Shared.shproj
+		SccProjectName8 = Toastinet.WinRT.Sample/Toastinet.WinRT.Sample.Shared
+		SccLocalPath8 = Toastinet.WinRT.Sample\\Toastinet.WinRT.Sample.Shared
+		SccProjectUniqueName9 = Toastinet.WinRT.Sample\\Toastinet.WinRT.Sample.Windows\\Toastinet.WinRT.Sample.Windows.csproj
 		SccProjectTopLevelParentUniqueName9 = Toastinet.sln
-		SccProjectName9 = Toastinet.WinRT.Sample/Toastinet.WinRT.Sample.Shared
-		SccLocalPath9 = Toastinet.WinRT.Sample\\Toastinet.WinRT.Sample.Shared
-		SccProjectUniqueName10 = Toastinet.WinRT.Sample\\Toastinet.WinRT.Sample.Shared\\Toastinet.WinRT.Sample.Shared.projitems
+		SccProjectName9 = Toastinet.WinRT.Sample/Toastinet.WinRT.Sample.Windows
+		SccLocalPath9 = Toastinet.WinRT.Sample\\Toastinet.WinRT.Sample.Windows
+		SccProjectUniqueName10 = Toastinet.WinRT.Sample\\Toastinet.WinRT.Sample.WindowsPhone\\Toastinet.WinRT.Sample.WindowsPhone.csproj
 		SccProjectTopLevelParentUniqueName10 = Toastinet.sln
-		SccProjectName10 = Toastinet.WinRT.Sample/Toastinet.WinRT.Sample.Shared
-		SccLocalPath10 = Toastinet.WinRT.Sample\\Toastinet.WinRT.Sample.Shared
-		SccProjectUniqueName11 = Toastinet.WinRT.Sample\\Toastinet.WinRT.Sample.Windows\\Toastinet.WinRT.Sample.Windows.csproj
+		SccProjectName10 = Toastinet.WinRT.Sample/Toastinet.WinRT.Sample.WindowsPhone
+		SccLocalPath10 = Toastinet.WinRT.Sample\\Toastinet.WinRT.Sample.WindowsPhone
+		SccProjectUniqueName11 = ToastinetSL\\Toastinet.csproj
 		SccProjectTopLevelParentUniqueName11 = Toastinet.sln
-		SccProjectName11 = Toastinet.WinRT.Sample/Toastinet.WinRT.Sample.Windows
-		SccLocalPath11 = Toastinet.WinRT.Sample\\Toastinet.WinRT.Sample.Windows
-		SccProjectUniqueName12 = Toastinet.WinRT.Sample\\Toastinet.WinRT.Sample.WindowsPhone\\Toastinet.WinRT.Sample.WindowsPhone.csproj
+		SccProjectName11 = ToastinetSL
+		SccLocalPath11 = ToastinetSL
+		SccProjectUniqueName12 = Toastinet.WinRT\\Toastinet.csproj
 		SccProjectTopLevelParentUniqueName12 = Toastinet.sln
-		SccProjectName12 = Toastinet.WinRT.Sample/Toastinet.WinRT.Sample.WindowsPhone
-		SccLocalPath12 = Toastinet.WinRT.Sample\\Toastinet.WinRT.Sample.WindowsPhone
+		SccProjectName12 = Toastinet.WinRT
+		SccLocalPath12 = Toastinet.WinRT
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

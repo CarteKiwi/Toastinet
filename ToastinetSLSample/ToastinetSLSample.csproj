@@ -80,6 +80,10 @@
     <Reference Include="System.Windows.Browser" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\ToastinetSample\ToastinetPortableContent.xaml.cs">
+      <Link>ToastinetPortableContent.xaml.cs</Link>
+      <DependentUpon>ToastinetPortableContent.xaml</DependentUpon>
+    </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
@@ -93,6 +97,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
+    <Page Include="..\ToastinetSample\ToastinetPortableContent.xaml">
+      <Link>ToastinetPortableContent.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="MainPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -102,15 +111,16 @@
     <None Include="Properties\AppManifest.xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ToastinetSL\ToastinetSL.csproj">
+    <ProjectReference Include="..\ToastinetSL\Toastinet.csproj">
       <Project>{15df25d8-8a64-4e0d-99a0-764c7c00dae9}</Project>
-      <Name>ToastinetSL</Name>
+      <Name>Toastinet</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="toast.png">
+    <Resource Include="..\ToastinetSample\toast.png">
+      <Link>toast.png</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    </Resource>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

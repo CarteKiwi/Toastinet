@@ -3,7 +3,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:toastinetWpf="clr-namespace:ToastinetWPF;assembly=ToastinetWPF"
-        Title="MainWindow" Height="380" Width="380">
+        Title="MainWindow" Height="400" Width="380">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -14,7 +14,6 @@
         <toastinetWpf:Toastinet x:Name="Toast"
                                 Message="{Binding Message, ElementName=PageRoot}"
                                 Title="Toastinet"
-                                FontFamily="Andy"
                                 Image="toast.png"
                                 Canvas.ZIndex="1"
                                 VerticalAlignment="Top" />
@@ -58,7 +57,17 @@
                 <Button Background="AliceBlue" Width="200" Margin="0,0,0,15" Content="animation LeftToRight" Click="OnL2R"/>
                 <Button Background="LightPink" Width="200" Margin="0,0,0,15" Content="listen for event" Click="OnEventToast" x:Name="ToastEventBtn"/>
                 <Button Background="LightSkyBlue" Width="200" Margin="0,0,0,15" Content="built at runtime with Owner" Click="OnWindow"/>
+                <Button Width="200" Margin="0,0,0,15" Content="fixed width" Click="OnNotStretch"/>
             </StackPanel>
+
+            <toastinetWpf:Toastinet x:Name="Toast4"
+                  Duration="1"
+                  Message="Toasts are now clipped"
+                  ShowLogo="False"
+                  AnimationType="RightToLeft"
+                  Width="250"
+                  Clipped="True"
+                  VerticalAlignment="Bottom" />
 
         </Grid>
 

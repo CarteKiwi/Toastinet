@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("ToastinetSL")]
+[assembly: AssemblyTitle("Toastinet")]
 [assembly: AssemblyDescription("Toastinet for Silverlight")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Guillaume Demicheli")]
-[assembly: AssemblyProduct("ToastinetSL")]
+[assembly: AssemblyProduct("Toastinet")]
 [assembly: AssemblyCopyright("Copyright © 2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

@@ -5,7 +5,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:toastinetWpf="clr-namespace:ToastinetWPF"
     mc:Ignorable="d"
     d:DesignHeight="50" d:DesignWidth="480" 
     HorizontalContentAlignment="Stretch">
@@ -144,7 +143,8 @@
 
         <Grid x:Name="MainGrid" Height="{Binding Height, ElementName=ToastRoot}" 
               Background="{Binding Background, ElementName=ToastRoot}"
-              Canvas.ZIndex="1">
+              Canvas.ZIndex="1"
+              RenderTransformOrigin=".5,.5">
             <Grid.RenderTransform>
                 <TransformGroup x:Name="MainGridTransformGroup">
                     <RotateTransform CenterX=".5" CenterY=".5" />
@@ -164,6 +164,7 @@
                            Visibility="{Binding ShowLogo, ElementName=ToastRoot, Converter={StaticResource BoolVisibilityConverter}}"/>
                     <TextBlock Text="{Binding Title, ElementName=ToastRoot}" Foreground="{Binding Foreground, ElementName=ToastRoot}"
                                FontWeight="Bold"
+                               FontFamily="{Binding FontFamily, ElementName=ToastRoot}"
                                VerticalAlignment="Center"
                                Margin="10,0,0,0"
                                Visibility="{Binding ShowLogo, ElementName=ToastRoot, Converter={StaticResource BoolVisibilityConverter}}"/>
@@ -175,6 +176,7 @@
                                Text="{Binding Message, ElementName=ToastRoot}" Foreground="{Binding Foreground, ElementName=ToastRoot}"
                                TextWrapping="{Binding TextWrapping, ElementName=ToastRoot}"
                                FontWeight="Thin"
+                               FontFamily="{Binding FontFamily, ElementName=ToastRoot}"
                                VerticalAlignment="Center"
                                Margin="10,0,0,0"/>
                 </StackPanel>
