@@ -1,5 +1,5 @@
 ﻿
-namespace Toastinet.WinRT
+namespace Toastinet.PCL
 {
     public enum AnimationType
     {

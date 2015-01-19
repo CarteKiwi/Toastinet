@@ -1,6 +1,6 @@
 ﻿<UserControl 
     x:Name="ToastRoot"
-    x:Class="ToastinetSL.Toastinet"
+    x:Class="Toastinet.PCL.Toastinet"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -149,8 +149,8 @@
                            Visibility="{Binding ShowLogo, ElementName=ToastRoot, Converter={StaticResource BoolVisibilityConverter}}"/>
                     <TextBlock Text="{Binding Title, ElementName=ToastRoot}" Foreground="{Binding Foreground, ElementName=ToastRoot}"
                                FontWeight="Bold"
-                               VerticalAlignment="Center"
                                FontFamily="{Binding FontFamily, ElementName=ToastRoot}"
+                               VerticalAlignment="Center"
                                Margin="10,0,0,0"
                                Visibility="{Binding ShowLogo, ElementName=ToastRoot, Converter={StaticResource BoolVisibilityConverter}}"/>
                     <TextBlock Margin="5,0,0,0" x:Name="Graduation"

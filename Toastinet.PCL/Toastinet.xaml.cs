@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Windows;
-using System.Windows.Media;
-using System.Windows.Threading;
+using Windows.UI;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Media;
 
-namespace ToastinetSL
+
+namespace Toastinet.PCL
 {
     /// <summary>
     /// Toastinet is an UserControl developed by Guillaume DEMICHELI shared on CodePlex via Nuget for Windows Phone
@@ -40,9 +40,6 @@ namespace ToastinetSL
         #endregion
 
         #region ShowLogo (Default: true)
-        /// <summary>
-        /// Show the image bound to the control (default is True)
-        /// </summary>
         public bool ShowLogo
         {
             get { return (bool)GetValue(ShowLogoProperty); }
@@ -73,7 +70,7 @@ namespace ToastinetSL
         }
 
         public static readonly DependencyProperty TextHAlignmentProperty =
-            DependencyProperty.Register("TextHAlignment", typeof(HorizontalAlignment), typeof(Toastinet), new PropertyMetadata(System.Windows.HorizontalAlignment.Stretch));
+            DependencyProperty.Register("TextHAlignment", typeof(HorizontalAlignment), typeof(Toastinet), new PropertyMetadata(HorizontalAlignment.Stretch));
         #endregion
 
         #region Message
@@ -90,25 +87,10 @@ namespace ToastinetSL
         {
             try
             {
+                if (e.NewValue == null || String.IsNullOrEmpty(e.NewValue.ToString()))
+                    return;
+
                 var toast = (Toastinet)d;
-
-                if (e.NewValue == null || String.IsNullOrEmpty(e.NewValue.ToString()) ||
-                    (e.OldValue != null && toast.Queued && toast._queue.Contains(e.OldValue.ToString())))
-                {
-                    if (e.NewValue == null || String.IsNullOrEmpty(e.NewValue.ToString()))
-                        if (toast.Queued && toast._queue.Any())
-                        {
-                            toast.Message = toast._queue.Dequeue();
-                        }
-                    return;
-                }
-
-                if (e.OldValue != null && toast.Queued && !toast.GetCurrentState(toast.GetValidAnimation() + "Group").Name.Contains("Closed"))
-                {
-                    toast._queue.Enqueue(e.NewValue.ToString());
-                    toast.Message = e.OldValue.ToString();
-                    return;
-                }
 
                 VisualStateManager.GoToState(toast, toast.GetValidAnimation() + "Opened", true);
 
@@ -121,22 +103,6 @@ namespace ToastinetSL
                 timer.Start();
             }
             catch { }
-        }
-
-        public VisualState GetCurrentState(string stateGroupName)
-        {
-            VisualStateGroup stateGroup1 = null;
-
-            IList<VisualStateGroup> list = (IList<VisualStateGroup>)VisualStateManager.GetVisualStateGroups(VisualTreeHelper.GetChild(this, 0) as FrameworkElement);
-
-            foreach (var v in list)
-                if (v.Name == stateGroupName)
-                {
-                    stateGroup1 = v;
-                    break;
-                }
-
-            return stateGroup1.CurrentState;
         }
         #endregion
 
@@ -322,7 +288,7 @@ namespace ToastinetSL
         public Toastinet()
         {
             InitializeComponent();
-
+            
             this.Loaded += (s, e) =>
             {
                 _isLoaded = true;
@@ -359,7 +325,7 @@ namespace ToastinetSL
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private void SbCompleted(object sender, EventArgs e)
+        private void SbCompleted(object sender, object o)
         {
             // Force the property to be changed even if the user don't change the message value
             // It's done in this callback to avoid text disappear (set to empty) before the closing animation is completed

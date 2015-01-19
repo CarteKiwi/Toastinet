@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
+using Windows.Foundation;
 using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media;
 
 
-namespace Toastinet.WinRT
+namespace Toastinet
 {
     /// <summary>
     /// Toastinet is an UserControl developed by Guillaume DEMICHELI shared on CodePlex via Nuget for Windows Phone
@@ -87,10 +89,26 @@ namespace Toastinet.WinRT
         {
             try
             {
-                if (e.NewValue == null || String.IsNullOrEmpty(e.NewValue.ToString()))
-                    return;
-
                 var toast = (Toastinet)d;
+
+                if (e.NewValue == null || String.IsNullOrEmpty(e.NewValue.ToString()) ||
+                    (e.OldValue != null && toast.Queued && toast._queue.Contains(e.OldValue.ToString())))
+                {
+                    if (e.NewValue == null || String.IsNullOrEmpty(e.NewValue.ToString()))
+                        if (toast.Queued && toast._queue.Any())
+                        {
+                            toast.Message = toast._queue.Dequeue();
+                        }
+                    return;
+                }
+
+                if (e.OldValue != null && toast.Queued &&
+                    !toast.GetCurrentState(toast.GetValidAnimation() + "Group").Name.Contains("Closed"))
+                {
+                    toast._queue.Enqueue(e.NewValue.ToString());
+                    toast.Message = e.OldValue.ToString();
+                    return;
+                }
 
                 VisualStateManager.GoToState(toast, toast.GetValidAnimation() + "Opened", true);
 
@@ -103,6 +121,22 @@ namespace Toastinet.WinRT
                 timer.Start();
             }
             catch { }
+        }
+
+        public VisualState GetCurrentState(string stateGroupName)
+        {
+            VisualStateGroup stateGroup1 = null;
+
+            IList<VisualStateGroup> list = (IList<VisualStateGroup>)VisualStateManager.GetVisualStateGroups(VisualTreeHelper.GetChild(this, 0) as FrameworkElement);
+
+            foreach (var v in list)
+                if (v.Name == stateGroupName)
+                {
+                    stateGroup1 = v;
+                    break;
+                }
+
+            return stateGroup1.CurrentState;
         }
         #endregion
 
@@ -135,7 +169,6 @@ namespace Toastinet.WinRT
             set { SetValue(TextWrappingProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for TextWrapping.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty TextWrappingProperty =
             DependencyProperty.Register("TextWrapping", typeof(TextWrapping), typeof(Toastinet), new PropertyMetadata(TextWrapping.NoWrap));
         #endregion
@@ -206,7 +239,8 @@ namespace Toastinet.WinRT
                 toast.AnimationType = AnimationType.Rotation;
             else
             {
-                toast.AnimationType = animType;
+                if (toast.AnimationType != animType)
+                    toast.AnimationType = animType;
             }
 
             if (toast._isLoaded)
@@ -261,8 +295,8 @@ namespace Toastinet.WinRT
             get
             {
                 var width = (int)LayoutRoot.ActualWidth;
-                if (this.AnimationType == AnimationType.LeftToLeft ||
-                    this.AnimationType == AnimationType.RightToLeft)
+                if (AnimationType == AnimationType.LeftToLeft ||
+                    AnimationType == AnimationType.RightToLeft)
                     width = -(int)LayoutRoot.ActualWidth;
 
                 return width;
@@ -274,8 +308,8 @@ namespace Toastinet.WinRT
             get
             {
                 var width = (int)LayoutRoot.ActualWidth;
-                if (this.AnimationType == AnimationType.LeftToRight ||
-                    this.AnimationType == AnimationType.LeftToLeft)
+                if (AnimationType == AnimationType.LeftToRight ||
+                    AnimationType == AnimationType.LeftToLeft)
                     width = -(int)LayoutRoot.ActualWidth;
 
                 return width;
@@ -288,8 +322,8 @@ namespace Toastinet.WinRT
         public Toastinet()
         {
             InitializeComponent();
-            
-            this.Loaded += (s, e) =>
+
+            Loaded += (s, e) =>
             {
                 _isLoaded = true;
                 if (PropertyChanged != null)
@@ -304,7 +338,7 @@ namespace Toastinet.WinRT
 
         private AnimationType GetValidAnimation()
         {
-            var anim = this.AnimationType;
+            var anim = AnimationType;
             if (anim == AnimationType.RightToLeft || anim == AnimationType.LeftToLeft || anim == AnimationType.RightToRight)
                 anim = AnimationType.LeftToRight;
 
@@ -321,6 +355,14 @@ namespace Toastinet.WinRT
             {
                 ToastMsg.Width = LayoutRoot.ActualWidth;
             }
+
+            if (Clipped)
+                LayoutRoot.Clip = new RectangleGeometry
+                {
+                    Rect = new Rect(0, 0, LayoutRoot.ActualWidth, LayoutRoot.ActualHeight + 10)
+                };
+            else
+                LayoutRoot.Clip = null;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -330,7 +372,7 @@ namespace Toastinet.WinRT
             // Force the property to be changed even if the user don't change the message value
             // It's done in this callback to avoid text disappear (set to empty) before the closing animation is completed
             // Not sure it's a good way to do it (it was done with the CoerceValue in WPF)
-            this.Message = String.Empty;
+            Message = String.Empty;
         }
     }
 }

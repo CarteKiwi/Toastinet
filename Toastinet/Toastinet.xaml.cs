@@ -71,7 +71,7 @@ namespace Toastinet
         }
 
         public static readonly DependencyProperty TextHAlignmentProperty =
-            DependencyProperty.Register("TextHAlignment", typeof(HorizontalAlignment), typeof(Toastinet), new PropertyMetadata(System.Windows.HorizontalAlignment.Stretch));
+            DependencyProperty.Register("TextHAlignment", typeof(HorizontalAlignment), typeof(Toastinet), new PropertyMetadata(HorizontalAlignment.Stretch));
         #endregion
 
         #region Message
@@ -226,7 +226,7 @@ namespace Toastinet
         }
 
         public static readonly DependencyProperty AnimationTypeProperty =
-            DependencyProperty.Register("AnimationType", typeof(AnimationType), typeof(Toastinet), new PropertyMetadata(global::Toastinet.AnimationType.Rotation, OnAnimationTypeChanged));
+            DependencyProperty.Register("AnimationType", typeof(AnimationType), typeof(Toastinet), new PropertyMetadata(AnimationType.Rotation, OnAnimationTypeChanged));
 
         private static void OnAnimationTypeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -234,7 +234,7 @@ namespace Toastinet
             AnimationType animType;
 
             if (!Enum.TryParse(e.NewValue.ToString(), out animType))
-                toast.AnimationType = global::Toastinet.AnimationType.Rotation;
+                toast.AnimationType = AnimationType.Rotation;
             else
             {
                 toast.AnimationType = animType;
@@ -292,8 +292,8 @@ namespace Toastinet
             get
             {
                 var width = (int)LayoutRoot.ActualWidth;
-                if (this.AnimationType == global::Toastinet.AnimationType.LeftToLeft ||
-                    this.AnimationType == global::Toastinet.AnimationType.RightToLeft)
+                if (AnimationType == AnimationType.LeftToLeft ||
+                    AnimationType == AnimationType.RightToLeft)
                     width = -(int)LayoutRoot.ActualWidth;
 
                 return width;
@@ -305,8 +305,8 @@ namespace Toastinet
             get
             {
                 var width = (int)LayoutRoot.ActualWidth;
-                if (this.AnimationType == global::Toastinet.AnimationType.LeftToRight ||
-                    this.AnimationType == global::Toastinet.AnimationType.LeftToLeft)
+                if (AnimationType == AnimationType.LeftToRight ||
+                    AnimationType == AnimationType.LeftToLeft)
                     width = -(int)LayoutRoot.ActualWidth;
 
                 return width;
@@ -320,7 +320,7 @@ namespace Toastinet
         {
             InitializeComponent();
 
-            this.Loaded += (s, e) =>
+            Loaded += (s, e) =>
             {
                 _isLoaded = true;
                 if (PropertyChanged != null)
@@ -335,9 +335,9 @@ namespace Toastinet
 
         private AnimationType GetValidAnimation()
         {
-            var anim = this.AnimationType;
-            if (anim == global::Toastinet.AnimationType.RightToLeft || anim == AnimationType.LeftToLeft || anim == AnimationType.RightToRight)
-                anim = global::Toastinet.AnimationType.LeftToRight;
+            var anim = AnimationType;
+            if (anim == AnimationType.RightToLeft || anim == AnimationType.LeftToLeft || anim == AnimationType.RightToRight)
+                anim = AnimationType.LeftToRight;
 
             return anim;
         }
@@ -348,7 +348,7 @@ namespace Toastinet
             {
                 ToastMsg.Width = LayoutRoot.ActualWidth - 10 - e.NewSize.Width;
             }
-            catch (Exception ex)
+            catch
             {
                 ToastMsg.Width = LayoutRoot.ActualWidth;
             }
@@ -369,7 +369,7 @@ namespace Toastinet
             // Force the property to be changed even if the user don't change the message value
             // It's done in this callback to avoid text disappear (set to empty) before the closing animation is completed
             // Not sure it's a good way to do it (it was done with the CoerceValue in WPF)
-            this.Message = String.Empty;
+            Message = String.Empty;
         }
     }
 }

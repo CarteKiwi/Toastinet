@@ -27,63 +27,68 @@ namespace ToastinetWPFSample
         public MainWindow()
         {
             InitializeComponent();
-            this.DataContext = this;
+            DataContext = this;
         }
 
         private void OnBasicToast(object sender, RoutedEventArgs e)
         {
-            this.Message = "This is a basic bound toast";
+            Message = "Data binding & queue : " + DateTime.Now.Second;
         }
 
         private void OnBasicToast2(object sender, RoutedEventArgs e)
         {
-            this.Toast2.Message = "This is a basic toast with message and without logo. You can set a large text (you have to set height indeed)";
+            Toast2.Message = "This is a basic toast with message and without logo. You can set a large text (you have to set height indeed)";
         }
 
         private void OnL2L(object sender, RoutedEventArgs e)
         {
-            this.Toast3.AnimationType = AnimationType.LeftToLeft;
-            this.Toast3.Foreground = new SolidColorBrush(Colors.Black);
-            this.Toast3.Background = new SolidColorBrush(Color.FromArgb(255, 230, 126, 34));
-            this.Toast3.Message = "This is a toast from left to left";
+            Toast3.AnimationType = AnimationType.LeftToLeft;
+            Toast3.Foreground = new SolidColorBrush(Colors.Black);
+            Toast3.Background = new SolidColorBrush(Color.FromArgb(255, 230, 126, 34));
+            Toast3.Message = "This is a toast from left to left";
         }
 
         private void OnR2R(object sender, RoutedEventArgs e)
         {
-            this.Toast3.AnimationType = AnimationType.RightToRight;
-            this.Toast3.Foreground = new SolidColorBrush(Colors.Black);
-            this.Toast3.Background = new SolidColorBrush(Color.FromArgb(255, 155, 89, 182));
-            this.Toast3.Message = "This is a toast from right to right";
+            Toast3.AnimationType = AnimationType.RightToRight;
+            Toast3.Foreground = new SolidColorBrush(Colors.Black);
+            Toast3.Background = new SolidColorBrush(Color.FromArgb(255, 155, 89, 182));
+            Toast3.Message = "This is a toast from right to right";
         }
 
         private void OnL2R(object sender, RoutedEventArgs e)
         {
-            this.Toast3.AnimationType = AnimationType.LeftToRight;
-            this.Toast3.Foreground = new SolidColorBrush(Color.FromArgb(255, 155, 89, 182));
-            this.Toast3.Background = new SolidColorBrush(Color.FromArgb(255, 236, 240, 241));
-            this.Toast3.Message = "This is a toast from left to right";
+            Toast3.AnimationType = AnimationType.LeftToRight;
+            Toast3.Foreground = new SolidColorBrush(Color.FromArgb(255, 155, 89, 182));
+            Toast3.Background = new SolidColorBrush(Color.FromArgb(255, 236, 240, 241));
+            Toast3.Message = "This is a toast from left to right";
         }
 
         private void OnEventToast(object sender, RoutedEventArgs e)
         {
             ToastEventBtn.Content = "== toast animating ==";
             ToastEventBtn.IsEnabled = false;
-            this.Toast2.Message = "This toast is listening for closing/closed events";
-            this.Toast2.Closing += ToastOnClosing;
-            this.Toast2.Closed += ToastOnClosed;
+            Toast2.Message = "This toast is listening for closing/closed events";
+            Toast2.Closing += ToastOnClosing;
+            Toast2.Closed += ToastOnClosed;
         }
 
         private void ToastOnClosing(object sender, VisualStateChangedEventArgs visualStateChangedEventArgs)
         {
-            this.Toast2.Closing -= ToastOnClosing;
+            Toast2.Closing -= ToastOnClosing;
             ToastEventBtn.Content = "toast closing...";
         }
 
         private void ToastOnClosed(object sender, VisualStateChangedEventArgs visualStateChangedEventArgs)
         {
-            this.Toast2.Closed -= ToastOnClosed;
+            Toast2.Closed -= ToastOnClosed;
             ToastEventBtn.Content = "toast event";
             ToastEventBtn.IsEnabled = true;
+        }
+
+        private void OnNotStretch(object sender, RoutedEventArgs e)
+        {
+            Toast4.Message = "This toast is not full width";
         }
 
         private void OnPropertyChanged(string name)

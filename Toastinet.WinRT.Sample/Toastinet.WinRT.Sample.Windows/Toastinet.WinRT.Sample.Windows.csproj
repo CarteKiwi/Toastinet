@@ -108,9 +108,9 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
-    <ProjectReference Include="..\..\Toastinet.WinRT\Toastinet.WinRT.csproj">
+    <ProjectReference Include="..\..\Toastinet.WinRT\Toastinet.csproj">
       <Project>{d77fa983-1900-4129-97ec-d6dc2d11edbb}</Project>
-      <Name>Toastinet.WinRT</Name>
+      <Name>Toastinet</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -123,6 +123,10 @@
     <None Include="Toastinet.WinRT.Sample.Windows_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\..\ToastinetSample\toast.png">
+      <Link>toast.png</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Assets\BadgeLogo.scale-100.png" />
     <Content Include="Assets\BadgeLogo.scale-180.png" />
     <Content Include="Assets\Logo.scale-100.png" />
