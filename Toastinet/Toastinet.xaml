@@ -153,8 +153,7 @@
                                VerticalAlignment="Center"
                                Margin="10,0,0,0"
                                Visibility="{Binding ShowLogo, ElementName=ToastRoot, Converter={StaticResource BoolVisibilityConverter}}"/>
-                    <TextBlock Margin="5,0,0,0" x:Name="Graduation"
-                               Style="{StaticResource PhoneTextNormalStyle}"/>
+                    <TextBlock Margin="5,0,0,0" x:Name="Graduation"/>
                 </StackPanel>
 
                 <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Center">
