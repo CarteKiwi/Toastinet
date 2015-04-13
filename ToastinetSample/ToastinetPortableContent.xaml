@@ -4,81 +4,90 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:toastinet="clr-namespace:Toastinet;assembly=Toastinet"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
     x:Class="ToastinetSample.ToastinetPortableContent"
     mc:Ignorable="d"
+    DataContext="{Binding RelativeSource={RelativeSource Self}}"
     d:DesignHeight="480" d:DesignWidth="480">
 
-  <Grid x:Name="LayoutRoot">
-    <Grid.RowDefinitions>
-      <RowDefinition Height="Auto"/>
-      <RowDefinition Height="*"/>
-    </Grid.RowDefinitions>
+    <Grid x:Name="LayoutRoot">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-    <toastinet:Toastinet x:Name="Toast"
-          Title="Toastinet"
-          Message="{Binding Message, Mode=TwoWay}"
-          Image="toast.png"
-          Canvas.ZIndex="1"
-          Queued="True"
-          VerticalAlignment="Top" />
+        <toastinet:Toastinet x:Name="Toast"
+			Title="Toastinet"
+			Message="{Binding Message, Mode=TwoWay}"
+			Image="toast.png"
+			Canvas.ZIndex="1"
+			Queued="True"
+			VerticalAlignment="Top">
+            <StackPanel>
+                <TextBlock Text="Add your custom content here"/>
+                <TextBlock Text="{Binding Message}"/>
+            </StackPanel>
+        </toastinet:Toastinet>
 
-    <toastinet:Toastinet Grid.Row="0"
-          x:Name="Toast2"
-          Duration="1"
-          Height="105"
-          ShowLogo="False"
-          FontSize="25"
-          TextHAlignment="Center"
-          AnimationType="Vertical"
-          Background="#2ecc71"
-          Foreground="Black"
-          TextWrapping="Wrap"
-          Canvas.ZIndex="1"
-          VerticalAlignment="Top" />
+        <toastinet:Toastinet Grid.Row="0"
+			x:Name="Toast2"
+			Duration="1"
+			Height="105"
+			ShowLogo="False"
+			FontSize="25"
+			TextHAlignment="Center"
+			AnimationType="Vertical"
+			Background="#2ecc71"
+			Foreground="Black"
+			TextWrapping="Wrap"
+			Canvas.ZIndex="1"
+			VerticalAlignment="Top" />
 
-    <toastinet:Toastinet x:Name="Toast3"
-          Duration="1"
-          Title="Toastinet"
-          AnimationType="RightToLeft"
-          Image="toast.png"
-          Canvas.ZIndex="1"
-          VerticalAlignment="Top" />
+        <toastinet:Toastinet x:Name="Toast3"
+			Duration="1"
+			Title="Toastinet"
+			AnimationType="RightToLeft"
+			Image="toast.png"
+			Canvas.ZIndex="1"
+			VerticalAlignment="Top" />
 
-    <!--TitlePanel contains the name of the application and page title-->
-    <StackPanel x:Name="TitlePanel" Grid.Row="0" Background="#E67F22"
-                Margin="0,20" Orientation="Horizontal">
-      <Image Source="toast.png" Height="50" Margin="10,0"></Image>
-      <TextBlock Text="Let's Toast with Toastinet" Margin="0" FontSize="18" VerticalAlignment="Center" />
-    </StackPanel>
+        <!--TitlePanel contains the name of the application and page title-->
+        <StackPanel x:Name="TitlePanel" Grid.Row="0" Background="#E67F22"
+			Margin="0,20" Orientation="Horizontal">
+            <Image Source="toast.png" Height="50" Margin="10,0"/>
+            <TextBlock Text="Let's Toast with Toastinet" Margin="0" FontSize="18" VerticalAlignment="Center" />
+        </StackPanel>
 
-    <!--ContentPanel - place additional content here-->
-    <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+        <!--ContentPanel - place additional content here-->
+        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
 
-      <StackPanel>
-        <Button Content="basic with bound data" Click="OnBasicToast" Height="80"/>
+            <StackPanel>
+                <Button Content="basic with bound data" Click="OnBasicToast" Height="80"/>
 
-        <Button Content="text wrapping from top" Click="OnBasicToast2" Height="80"/>
+                <Button Content="text wrapping from top" Click="OnBasicToast2" Height="80"/>
 
-        <Button Content="animation LeftToLeft" Click="OnL2L" Height="80"/>
+                <Button Content="animation LeftToLeft" Click="OnL2L" Height="80"/>
 
-        <Button Content="animation RightToRight" Click="OnR2R" Height="80"/>
+                <Button Content="animation RightToRight" Click="OnR2R" Height="80"/>
 
-        <Button Content="animation LeftToRight" Click="OnL2R" Height="80"/>
+                <Button Content="animation LeftToRight" Click="OnL2R" Height="80"/>
 
-        <Button Content="toast event" Click="OnEventToast" x:Name="ToastEventBtn" Height="80"/>
+                <Button Content="toast event" Click="OnEventToast" x:Name="ToastEventBtn" Height="80"/>
 
-        <Button Content="fixed width" Click="OnNotStretch" Height="80"/>
-      </StackPanel>
+                <Button Content="fixed width" Click="OnNotStretch" Height="80"/>
+            </StackPanel>
 
-      <toastinet:Toastinet x:Name="Toast4"
-          Duration="1"
-          Message="Toasts are now clipped"
-          ShowLogo="False"
-          AnimationType="RightToLeft"
-          Width="250"
-          Clipped="True"
-          VerticalAlignment="Bottom" />
+            <toastinet:Toastinet x:Name="Toast4"
+				Duration="1"
+				Message="Toasts are now clipped"
+				ShowLogo="False"
+				AnimationType="RightToLeft"
+				Width="250"
+				Clipped="True"
+				VerticalAlignment="Bottom" >
+                <!--<TextBlock Text="{Binding Message}"/>-->
+            </toastinet:Toastinet>
+        </Grid>
+
     </Grid>
-
-  </Grid>
 </UserControl>

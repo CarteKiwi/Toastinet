@@ -29,7 +29,6 @@ namespace ToastinetSample
         public ToastinetPortableContent()
         {
             InitializeComponent();
-            DataContext = this;
         }
 
         private void OnBasicToast(object sender, RoutedEventArgs e)
