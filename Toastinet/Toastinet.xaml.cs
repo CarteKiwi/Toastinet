@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
+using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Threading;
 
@@ -12,6 +13,7 @@ namespace Toastinet
     /// <summary>
     /// Toastinet is an UserControl developed by Guillaume DEMICHELI shared on CodePlex via Nuget for Windows Phone
     /// </summary>
+    [ContentProperty("CContent")]
     public partial class Toastinet : INotifyPropertyChanged
     {
         #region Private variables
@@ -40,6 +42,24 @@ namespace Toastinet
         }
         #endregion
 
+        public new object CContent
+        {
+            get { return GetValue(ContentProperty); }
+            set { SetValue(ContentProperty, value); }
+        }
+
+        public new static readonly DependencyProperty ContentProperty =
+            DependencyProperty.Register("CContent", typeof(object), typeof(Toastinet), new PropertyMetadata(null, OnContentChanged));
+
+        private static void OnContentChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var toast = (Toastinet)d;
+            if (e.NewValue != null)
+                toast.DefaultContent.Visibility = Visibility.Collapsed;
+            else
+                toast.DefaultContent.Visibility = Visibility.Visible;
+        }
+
         #region ShowLogo (Default: true)
         public bool ShowLogo
         {
@@ -47,9 +67,27 @@ namespace Toastinet
             set { SetValue(ShowLogoProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for ShowLogo.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ShowLogoProperty =
-            DependencyProperty.Register("ShowLogo", typeof(bool), typeof(Toastinet), new PropertyMetadata(true));
+            DependencyProperty.Register("ShowLogo", typeof(bool), typeof(Toastinet), new PropertyMetadata(true, OnLogoVisibilityChanged));
+
+        private static void OnLogoVisibilityChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var toast = (Toastinet)d;
+            if ((bool)e.NewValue)
+                toast.LogoVisibility = Visibility.Visible;
+            else
+                toast.LogoVisibility = Visibility.Collapsed;
+        }
+
+        internal Visibility LogoVisibility
+        {
+            get { return (Visibility)GetValue(LogoVisibilityProperty); }
+            set { SetValue(LogoVisibilityProperty, value); }
+        }
+
+        public static readonly DependencyProperty LogoVisibilityProperty =
+            DependencyProperty.Register("LogoVisibility", typeof(Visibility), typeof(Toastinet), new PropertyMetadata(System.Windows.Visibility.Collapsed));
+
         #endregion
 
         #region Background (Default: ARGB = 255, 52, 73, 94)
@@ -90,7 +128,7 @@ namespace Toastinet
             {
                 var toast = (Toastinet)d;
 
-                if (e.NewValue == null || String.IsNullOrEmpty(e.NewValue.ToString()) || 
+                if (e.NewValue == null || String.IsNullOrEmpty(e.NewValue.ToString()) ||
                     (e.OldValue != null && toast.Queued && toast._queue.Contains(e.OldValue.ToString())))
                 {
                     if (e.NewValue == null || String.IsNullOrEmpty(e.NewValue.ToString()))
@@ -319,6 +357,8 @@ namespace Toastinet
         public Toastinet()
         {
             InitializeComponent();
+
+            ((FrameworkElement)Content).DataContext = this;
 
             Loaded += (s, e) =>
             {
