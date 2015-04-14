@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Threading;
 
-
 namespace Toastinet
 {
     /// <summary>
-    /// Toastinet is an UserControl developed by Guillaume DEMICHELI shared on CodePlex via Nuget for Windows Phone
+    /// Toastinet is a tool developed by Guillaume DEMICHELI shared on CodePlex via Nuget for free
     /// </summary>
     [ContentProperty("ToastContent")]
     public partial class Toastinet : INotifyPropertyChanged
@@ -62,17 +62,6 @@ namespace Toastinet
         }
         #endregion
 
-        #region Background (Default: ARGB = 255, 52, 73, 94)
-        public new SolidColorBrush Background
-        {
-            get { return (SolidColorBrush)GetValue(BackgroundProperty); }
-            set { SetValue(BackgroundProperty, value); }
-        }
-
-        public new static readonly DependencyProperty BackgroundProperty =
-            DependencyProperty.Register("Background", typeof(SolidColorBrush), typeof(Toastinet), new PropertyMetadata(new SolidColorBrush { Color = new Color { A = 255, R = 52, G = 73, B = 94 }, Opacity = .9 }));
-        #endregion
-
         #region TextHAlignment (Horizontal alignment) (Default: Stretch)
         public HorizontalAlignment TextHAlignment
         {
@@ -111,7 +100,8 @@ namespace Toastinet
                     return;
                 }
 
-                if (e.OldValue != null && toast.Queued && !toast.GetCurrentState(toast.GetValidAnimation() + "Group").Name.Contains("Closed"))
+                if (e.OldValue != null && toast.Queued &&
+                    !toast.GetCurrentState(toast.GetValidAnimation() + "Group").Name.Contains("Closed"))
                 {
                     toast._queue.Enqueue(e.NewValue.ToString());
                     toast.Message = e.OldValue.ToString();
@@ -128,23 +118,21 @@ namespace Toastinet
                 };
                 timer.Start();
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("Exception occured during OnTextChanged operation. Details: " + ex.Message);
+            }
         }
 
         public VisualState GetCurrentState(string stateGroupName)
         {
-            VisualStateGroup stateGroup1 = null;
+            var list = (IList<VisualStateGroup>)VisualStateManager.GetVisualStateGroups(VisualTreeHelper.GetChild(this, 0) as FrameworkElement);
 
-            IList<VisualStateGroup> list = (IList<VisualStateGroup>)VisualStateManager.GetVisualStateGroups(VisualTreeHelper.GetChild(this, 0) as FrameworkElement);
+            var stateGroup1 = list.FirstOrDefault(v => v.Name == stateGroupName);
 
-            foreach (var v in list)
-                if (v.Name == stateGroupName)
-                {
-                    stateGroup1 = v;
-                    break;
-                }
+            if (stateGroup1 != null) return stateGroup1.CurrentState;
 
-            return stateGroup1.CurrentState;
+            return null;
         }
         #endregion
 
