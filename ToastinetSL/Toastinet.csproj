@@ -61,9 +61,6 @@
     <Reference Include="System.Windows.Browser" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\Toastinet\Converters\BoolVisibilityConverter.cs">
-      <Link>Converters\BoolVisibilityConverter.cs</Link>
-    </Compile>
     <Compile Include="..\Toastinet\Enums.cs">
       <Link>Enums.cs</Link>
     </Compile>

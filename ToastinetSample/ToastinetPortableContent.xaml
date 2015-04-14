@@ -19,13 +19,15 @@
         <toastinet:Toastinet x:Name="Toast"
 			Title="Toastinet"
 			Message="{Binding Message, Mode=TwoWay}"
-			Image="toast.png"
+            Background="#E67F22"
 			Canvas.ZIndex="1"
 			Queued="True"
 			VerticalAlignment="Top">
-            <StackPanel>
-                <TextBlock Text="Add your custom content here"/>
-                <TextBlock Text="{Binding Message}"/>
+            <StackPanel Margin="10">
+                <TextBlock FontSize="20" Text="- custom content"/>
+                <TextBlock FontSize="20" Text="- dynamic height"/>
+                <TextBlock FontSize="20" Text="{Binding Message, Mode=TwoWay}"/>
+                <Image Source="toast.png" Height="60"></Image>
             </StackPanel>
         </toastinet:Toastinet>
 
@@ -33,7 +35,6 @@
 			x:Name="Toast2"
 			Duration="1"
 			Height="105"
-			ShowLogo="False"
 			FontSize="25"
 			TextHAlignment="Center"
 			AnimationType="Vertical"
@@ -80,13 +81,10 @@
             <toastinet:Toastinet x:Name="Toast4"
 				Duration="1"
 				Message="Toasts are now clipped"
-				ShowLogo="False"
 				AnimationType="RightToLeft"
 				Width="250"
 				Clipped="True"
-				VerticalAlignment="Bottom" >
-                <!--<TextBlock Text="{Binding Message}"/>-->
-            </toastinet:Toastinet>
+				VerticalAlignment="Bottom"/>
         </Grid>
 
     </Grid>
