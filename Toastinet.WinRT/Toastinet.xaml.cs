@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using Windows.Foundation;
 using Windows.UI;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Markup;
 using Windows.UI.Xaml.Media;
 
 
@@ -13,6 +15,7 @@ namespace Toastinet
     /// <summary>
     /// Toastinet is an UserControl developed by Guillaume DEMICHELI shared on CodePlex via Nuget for Windows Phone
     /// </summary>
+    [ContentProperty(Name = "ToastContent")]
     public partial class Toastinet : INotifyPropertyChanged
     {
         #region Private variables
@@ -41,16 +44,24 @@ namespace Toastinet
         }
         #endregion
 
-        #region ShowLogo (Default: true)
-        public bool ShowLogo
+        #region ToastContent
+        public object ToastContent
         {
-            get { return (bool)GetValue(ShowLogoProperty); }
-            set { SetValue(ShowLogoProperty, value); }
+            get { return GetValue(ContentProperty); }
+            set { SetValue(ContentProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for ShowLogo.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty ShowLogoProperty =
-            DependencyProperty.Register("ShowLogo", typeof(bool), typeof(Toastinet), new PropertyMetadata(true));
+        public new static readonly DependencyProperty ContentProperty =
+            DependencyProperty.Register("ToastContent", typeof(object), typeof(Toastinet), new PropertyMetadata(null, OnContentChanged));
+
+        private static void OnContentChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var toast = (Toastinet)d;
+            if (e.NewValue != null)
+                toast.DefaultContent.Visibility = Visibility.Collapsed;
+            else
+                toast.DefaultContent.Visibility = Visibility.Visible;
+        }
         #endregion
 
         #region Background (Default: ARGB = 255, 52, 73, 94)
@@ -89,7 +100,7 @@ namespace Toastinet
         {
             try
             {
-                var toast = (Toastinet)d;
+                var toast = (Toastinet) d;
 
                 if (e.NewValue == null || String.IsNullOrEmpty(e.NewValue.ToString()) ||
                     (e.OldValue != null && toast.Queued && toast._queue.Contains(e.OldValue.ToString())))
@@ -112,7 +123,7 @@ namespace Toastinet
 
                 VisualStateManager.GoToState(toast, toast.GetValidAnimation() + "Opened", true);
 
-                var timer = new DispatcherTimer { Interval = toast._interval };
+                var timer = new DispatcherTimer {Interval = toast._interval};
                 timer.Tick += (s, t) =>
                 {
                     VisualStateManager.GoToState(toast, toast.GetValidAnimation() + "Closed", true);
@@ -120,7 +131,10 @@ namespace Toastinet
                 };
                 timer.Start();
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("Exception occured during OnTextChanged operation. Details: " + ex.Message);
+            }
         }
 
         public VisualState GetCurrentState(string stateGroupName)
@@ -173,29 +187,14 @@ namespace Toastinet
             DependencyProperty.Register("TextWrapping", typeof(TextWrapping), typeof(Toastinet), new PropertyMetadata(TextWrapping.NoWrap));
         #endregion
 
-        #region Height
-
-        public int InvertedHeight
+        #region ReversedHeight
+        public int ReversedHeight
         {
             get
             {
-                return -(int)GetValue(HeightProperty);
+                return -(int)MainGrid.ActualHeight;
             }
         }
-
-        public new int Height
-        {
-            get { return (int)GetValue(HeightProperty); }
-            set
-            {
-                SetValue(HeightProperty, value);
-                //PropertyChanged(this, new PropertyChangedEventArgs("InvertedHeight"));
-            }
-        }
-
-        public new static readonly DependencyProperty HeightProperty =
-            DependencyProperty.Register("Height", typeof(int), typeof(Toastinet), new PropertyMetadata(50));
-
         #endregion
 
         #region Title
@@ -205,7 +204,25 @@ namespace Toastinet
             set { SetValue(TitleProperty, value); }
         }
 
-        public static readonly DependencyProperty TitleProperty = DependencyProperty.Register("Title", typeof(string), typeof(Toastinet), new PropertyMetadata("AppName"));
+        public static readonly DependencyProperty TitleProperty = DependencyProperty.Register("Title", typeof(string), typeof(Toastinet), new PropertyMetadata(string.Empty, OnTitleChanged));
+
+        private static void OnTitleChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var toast = (Toastinet)d;
+            if (e.NewValue != null)
+                toast.TitleVisibility = Visibility.Visible;
+            else
+                toast.TitleVisibility = Visibility.Collapsed;
+        }
+
+        internal Visibility TitleVisibility
+        {
+            get { return (Visibility)GetValue(TitleVisibilityProperty); }
+            set { SetValue(TitleVisibilityProperty, value); }
+        }
+
+        public static readonly DependencyProperty TitleVisibilityProperty =
+            DependencyProperty.Register("TitleVisibility", typeof(Visibility), typeof(Toastinet), new PropertyMetadata(Visibility.Collapsed));
         #endregion
 
         #region Image
@@ -214,7 +231,25 @@ namespace Toastinet
             get { return (ImageSource)GetValue(ImageProperty); }
             set { SetValue(ImageProperty, value); }
         }
-        public static readonly DependencyProperty ImageProperty = DependencyProperty.Register("Image", typeof(ImageSource), typeof(Toastinet), new PropertyMetadata(null));
+        public static readonly DependencyProperty ImageProperty = DependencyProperty.Register("Image", typeof(ImageSource), typeof(Toastinet), new PropertyMetadata(null, OnImageChanged));
+
+        private static void OnImageChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var toast = (Toastinet)d;
+            if (e.NewValue != null)
+                toast.LogoVisibility = Visibility.Visible;
+            else
+                toast.LogoVisibility = Visibility.Collapsed;
+        }
+
+        internal Visibility LogoVisibility
+        {
+            get { return (Visibility)GetValue(LogoVisibilityProperty); }
+            set { SetValue(LogoVisibilityProperty, value); }
+        }
+
+        public static readonly DependencyProperty LogoVisibilityProperty =
+            DependencyProperty.Register("LogoVisibility", typeof(Visibility), typeof(Toastinet), new PropertyMetadata(Visibility.Collapsed));
         #endregion
 
         #region AnimationType
@@ -372,7 +407,7 @@ namespace Toastinet
             // Force the property to be changed even if the user don't change the message value
             // It's done in this callback to avoid text disappear (set to empty) before the closing animation is completed
             // Not sure it's a good way to do it (it was done with the CoerceValue in WPF)
-            Message = String.Empty;
+            Message = string.Empty;
         }
     }
 }

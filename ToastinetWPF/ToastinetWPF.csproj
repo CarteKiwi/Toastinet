@@ -60,7 +60,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="Converters\BoolVisibilityConverter.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="Toastinet.xaml.cs">
       <DependentUpon>Toastinet.xaml</DependentUpon>

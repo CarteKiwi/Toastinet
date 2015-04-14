@@ -1,20 +1,19 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Threading;
-
 
 namespace ToastinetWPF
 {
     /// <summary>
     /// Toastinet is an UserControl developed by Guillaume DEMICHELI shared on CodePlex via Nuget for Windows Phone
     /// </summary>
+    [ContentProperty("ToastContent")]
     public partial class Toastinet : INotifyPropertyChanged
     {
         #region Private variables
@@ -125,19 +124,24 @@ namespace ToastinetWPF
         }
         #endregion
 
-        #region ShowLogo
-        /// <summary>
-        /// Show the image bound to the control (default is True)
-        /// </summary>
-        public bool ShowLogo
+        #region ToastContent
+        public object ToastContent
         {
-            get { return (bool)GetValue(ShowLogoProperty); }
-            set { SetValue(ShowLogoProperty, value); }
+            get { return GetValue(ContentProperty); }
+            set { SetValue(ContentProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for ShowLogo.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty ShowLogoProperty =
-            DependencyProperty.Register("ShowLogo", typeof(bool), typeof(Toastinet), new PropertyMetadata(true));
+        public new static readonly DependencyProperty ContentProperty =
+            DependencyProperty.Register("ToastContent", typeof(object), typeof(Toastinet), new PropertyMetadata(null, OnContentChanged));
+
+        private static void OnContentChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var toast = (Toastinet)d;
+            if (e.NewValue != null)
+                toast.DefaultContent.Visibility = Visibility.Collapsed;
+            else
+                toast.DefaultContent.Visibility = Visibility.Visible;
+        }
         #endregion
 
         #region Background (Default: ARGB = 255, 52, 73, 94)
@@ -291,29 +295,14 @@ namespace ToastinetWPF
             DependencyProperty.Register("TextWrapping", typeof(TextWrapping), typeof(Toastinet), new PropertyMetadata(TextWrapping.NoWrap));
         #endregion
 
-        #region Height
-
-        public int InvertedHeight
+        #region ReversedHeight
+        public int ReversedHeight
         {
             get
             {
-                return -(int)GetValue(HeightProperty);
+                return -(int)MainGrid.ActualHeight;
             }
         }
-
-        public new int Height
-        {
-            get { return (int)GetValue(HeightProperty); }
-            set
-            {
-                SetValue(HeightProperty, value);
-                //PropertyChanged(this, new PropertyChangedEventArgs("InvertedHeight"));
-            }
-        }
-
-        public new static readonly DependencyProperty HeightProperty =
-            DependencyProperty.Register("Height", typeof(int), typeof(Toastinet), new PropertyMetadata(30));
-
         #endregion
 
         #region Title
@@ -323,7 +312,25 @@ namespace ToastinetWPF
             set { SetValue(TitleProperty, value); }
         }
 
-        public static readonly DependencyProperty TitleProperty = DependencyProperty.Register("Title", typeof(string), typeof(Toastinet), new PropertyMetadata("AppName"));
+        public static readonly DependencyProperty TitleProperty = DependencyProperty.Register("Title", typeof(string), typeof(Toastinet), new PropertyMetadata(string.Empty, OnTitleChanged));
+
+        private static void OnTitleChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var toast = (Toastinet)d;
+            if (e.NewValue != null)
+                toast.TitleVisibility = Visibility.Visible;
+            else
+                toast.TitleVisibility = Visibility.Collapsed;
+        }
+
+        internal Visibility TitleVisibility
+        {
+            get { return (Visibility)GetValue(TitleVisibilityProperty); }
+            set { SetValue(TitleVisibilityProperty, value); }
+        }
+
+        public static readonly DependencyProperty TitleVisibilityProperty =
+            DependencyProperty.Register("TitleVisibility", typeof(Visibility), typeof(Toastinet), new PropertyMetadata(System.Windows.Visibility.Collapsed));
         #endregion
 
         #region Image
@@ -332,7 +339,25 @@ namespace ToastinetWPF
             get { return (ImageSource)GetValue(ImageProperty); }
             set { SetValue(ImageProperty, value); }
         }
-        public static readonly DependencyProperty ImageProperty = DependencyProperty.Register("Image", typeof(ImageSource), typeof(Toastinet));
+        public static readonly DependencyProperty ImageProperty = DependencyProperty.Register("Image", typeof(ImageSource), typeof(Toastinet), new PropertyMetadata(null, OnImageChanged));
+
+        private static void OnImageChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var toast = (Toastinet)d;
+            if (e.NewValue != null)
+                toast.LogoVisibility = Visibility.Visible;
+            else
+                toast.LogoVisibility = Visibility.Collapsed;
+        }
+
+        internal Visibility LogoVisibility
+        {
+            get { return (Visibility)GetValue(LogoVisibilityProperty); }
+            set { SetValue(LogoVisibilityProperty, value); }
+        }
+
+        public static readonly DependencyProperty LogoVisibilityProperty =
+            DependencyProperty.Register("LogoVisibility", typeof(Visibility), typeof(Toastinet), new PropertyMetadata(System.Windows.Visibility.Collapsed));
         #endregion
 
         #region AnimationType
