@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using Windows.Foundation;
-using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Markup;
 using Windows.UI.Xaml.Media;
@@ -64,17 +63,6 @@ namespace Toastinet
         }
         #endregion
 
-        #region Background (Default: ARGB = 255, 52, 73, 94)
-        public new SolidColorBrush Background
-        {
-            get { return (SolidColorBrush)GetValue(BackgroundProperty); }
-            set { SetValue(BackgroundProperty, value); }
-        }
-
-        public new static readonly DependencyProperty BackgroundProperty =
-            DependencyProperty.Register("Background", typeof(SolidColorBrush), typeof(Toastinet), new PropertyMetadata(new SolidColorBrush { Color = new Color { A = 255, R = 52, G = 73, B = 94 }, Opacity = .9 }));
-        #endregion
-
         #region TextHAlignment (Horizontal alignment) (Default: Stretch)
         public HorizontalAlignment TextHAlignment
         {
@@ -100,7 +88,7 @@ namespace Toastinet
         {
             try
             {
-                var toast = (Toastinet) d;
+                var toast = (Toastinet)d;
 
                 if (e.NewValue == null || String.IsNullOrEmpty(e.NewValue.ToString()) ||
                     (e.OldValue != null && toast.Queued && toast._queue.Contains(e.OldValue.ToString())))
@@ -123,7 +111,7 @@ namespace Toastinet
 
                 VisualStateManager.GoToState(toast, toast.GetValidAnimation() + "Opened", true);
 
-                var timer = new DispatcherTimer {Interval = toast._interval};
+                var timer = new DispatcherTimer { Interval = toast._interval };
                 timer.Tick += (s, t) =>
                 {
                     VisualStateManager.GoToState(toast, toast.GetValidAnimation() + "Closed", true);
@@ -139,16 +127,9 @@ namespace Toastinet
 
         public VisualState GetCurrentState(string stateGroupName)
         {
-            VisualStateGroup stateGroup1 = null;
+            var list = VisualStateManager.GetVisualStateGroups(VisualTreeHelper.GetChild(this, 0) as FrameworkElement);
 
-            IList<VisualStateGroup> list = (IList<VisualStateGroup>)VisualStateManager.GetVisualStateGroups(VisualTreeHelper.GetChild(this, 0) as FrameworkElement);
-
-            foreach (var v in list)
-                if (v.Name == stateGroupName)
-                {
-                    stateGroup1 = v;
-                    break;
-                }
+            VisualStateGroup stateGroup1 = list.FirstOrDefault(v => v.Name == stateGroupName);
 
             return stateGroup1.CurrentState;
         }
@@ -280,8 +261,7 @@ namespace Toastinet
 
             if (toast._isLoaded)
             {
-                toast.PropertyChanged(d, new PropertyChangedEventArgs("WidthToClosed"));
-                toast.PropertyChanged(d, new PropertyChangedEventArgs("WidthToOpened"));
+                toast.NotifyChanged();
                 var projection = toast.MainGrid.Projection as PlaneProjection;
                 if (projection != null)
                 {
@@ -361,12 +341,7 @@ namespace Toastinet
             Loaded += (s, e) =>
             {
                 _isLoaded = true;
-                if (PropertyChanged != null)
-                {
-                    PropertyChanged(this, new PropertyChangedEventArgs("WidthToClosed"));
-                    PropertyChanged(this, new PropertyChangedEventArgs("WidthToOpened"));
-                }
-
+                NotifyChanged();
                 VisualStateManager.GoToState(this, GetValidAnimation() + "Closed", false);
             };
         }
@@ -389,6 +364,7 @@ namespace Toastinet
             catch (Exception ex)
             {
                 ToastMsg.Width = LayoutRoot.ActualWidth;
+                Debug.WriteLine(ex.Message);
             }
 
             if (Clipped)
@@ -408,6 +384,20 @@ namespace Toastinet
             // It's done in this callback to avoid text disappear (set to empty) before the closing animation is completed
             // Not sure it's a good way to do it (it was done with the CoerceValue in WPF)
             Message = string.Empty;
+        }
+
+        private void OnSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            NotifyChanged();
+        }
+
+        private void NotifyChanged()
+        {
+            if (PropertyChanged == null) return;
+
+            PropertyChanged(this, new PropertyChangedEventArgs("WidthToClosed"));
+            PropertyChanged(this, new PropertyChangedEventArgs("WidthToOpened"));
+            PropertyChanged(this, new PropertyChangedEventArgs("ReversedHeight"));
         }
     }
 }

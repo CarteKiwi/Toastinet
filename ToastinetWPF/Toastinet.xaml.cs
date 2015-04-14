@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -144,17 +145,6 @@ namespace ToastinetWPF
         }
         #endregion
 
-        #region Background (Default: ARGB = 255, 52, 73, 94)
-        public new SolidColorBrush Background
-        {
-            get { return (SolidColorBrush)GetValue(BackgroundProperty); }
-            set { SetValue(BackgroundProperty, value); }
-        }
-
-        public new static readonly DependencyProperty BackgroundProperty =
-            DependencyProperty.Register("Background", typeof(SolidColorBrush), typeof(Toastinet), new PropertyMetadata(new SolidColorBrush { Color = new Color { A = 255, R = 52, G = 73, B = 94 }, Opacity = .9 }));
-        #endregion
-
         #region TextHAlignment (Horizontal alignment) (Default: Stretch)
         public HorizontalAlignment TextHAlignment
         {
@@ -245,18 +235,13 @@ namespace ToastinetWPF
 
         public VisualState GetCurrentState(string stateGroupName)
         {
-            VisualStateGroup stateGroup1 = null;
+            var list = (IList<VisualStateGroup>)VisualStateManager.GetVisualStateGroups(LayoutRoot);
 
-            IList<VisualStateGroup> list = (IList<VisualStateGroup>)VisualStateManager.GetVisualStateGroups(LayoutRoot as FrameworkElement);
+            if (list == null) return null;
 
-            foreach (var v in list)
-                if (v.Name == stateGroupName)
-                {
-                    stateGroup1 = v;
-                    break;
-                }
+            var stateGroup1 = list.FirstOrDefault(v => v.Name == stateGroupName);
 
-            return stateGroup1.CurrentState;
+            return stateGroup1 != null ? stateGroup1.CurrentState : null;
         }
 
         #endregion
@@ -387,8 +372,7 @@ namespace ToastinetWPF
 
             if (toast.PropertyChanged != null)
             {
-                toast.PropertyChanged(d, new PropertyChangedEventArgs("WidthToClosed"));
-                toast.PropertyChanged(d, new PropertyChangedEventArgs("WidthToOpened"));
+                toast. NotifyChanged();
                 var tg = toast.MainGrid.RenderTransform as TransformGroup;
                 if (tg != null)
                 {
@@ -444,8 +428,8 @@ namespace ToastinetWPF
             get
             {
                 var width = (int)LayoutRoot.ActualWidth;
-                if (this.AnimationType == AnimationType.LeftToLeft ||
-                    this.AnimationType == AnimationType.RightToLeft)
+                if (AnimationType == AnimationType.LeftToLeft ||
+                    AnimationType == AnimationType.RightToLeft)
                     width = -(int)LayoutRoot.ActualWidth;
 
                 return width;
@@ -457,8 +441,8 @@ namespace ToastinetWPF
             get
             {
                 var width = (int)LayoutRoot.ActualWidth;
-                if (this.AnimationType == AnimationType.LeftToRight ||
-                    this.AnimationType == AnimationType.LeftToLeft)
+                if (AnimationType == AnimationType.LeftToRight ||
+                    AnimationType == AnimationType.LeftToLeft)
                     width = -(int)LayoutRoot.ActualWidth;
 
                 return width;
@@ -472,35 +456,30 @@ namespace ToastinetWPF
         {
             InitializeComponent();
 
-            base.Loaded += (s, e) =>
+            Loaded += (s, e) =>
             {
                 if (PropertyChanged != null)
                 {
                     _isLoaded = true;
-
-                    PropertyChanged(this, new PropertyChangedEventArgs("WidthToClosed"));
-                    PropertyChanged(this, new PropertyChangedEventArgs("WidthToOpened"));
-                    PropertyChanged(this, new PropertyChangedEventArgs("AnimationType"));
+                    NotifyChanged();
                     VisualStateManager.GoToState(this, GetValidAnimation() + "Closed", false);
-
                 }
 
                 VisualStateManager.GoToState(this, GetValidAnimation() + "Closed", false);
             };
-
         }
 
         public void Show(string message = null)
         {
             if (!IsFullyLoaded)
-                this.LLoaded += (s, e) => Show(message);
+                LLoaded += (s, e) => Show(message);
             else
-                this.Message = message ?? this.Message;
+                Message = message ?? Message;
         }
 
         private AnimationType GetValidAnimation()
         {
-            var anim = this.AnimationType;
+            var anim = AnimationType;
             if (anim == AnimationType.RightToLeft || anim == AnimationType.LeftToLeft || anim == AnimationType.RightToRight)
                 anim = AnimationType.LeftToRight;
 
@@ -516,6 +495,7 @@ namespace ToastinetWPF
             catch (Exception ex)
             {
                 ToastMsg.Width = LayoutRoot.ActualWidth;
+                Debug.WriteLine(ex.Message);
             }
 
             if (Clipped)
@@ -527,11 +507,21 @@ namespace ToastinetWPF
                 LayoutRoot.Clip = null;
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        private void OnSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            NotifyChanged();
+        }
 
-        //private void SbCompleted(object sender, EventArgs e)
-        //{
-        //    Message = String.Empty;
-        //}
+        private void NotifyChanged()
+        {
+            if (PropertyChanged == null) return;
+
+            PropertyChanged(this, new PropertyChangedEventArgs("WidthToClosed"));
+            PropertyChanged(this, new PropertyChangedEventArgs("WidthToOpened"));
+            PropertyChanged(this, new PropertyChangedEventArgs("ReversedHeight"));
+            PropertyChanged(this, new PropertyChangedEventArgs("AnimationType"));
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 }
