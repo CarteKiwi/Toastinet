@@ -302,7 +302,7 @@ namespace ToastinetWPF
         private static void OnTitleChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var toast = (Toastinet)d;
-            if (e.NewValue != null)
+            if (e.NewValue != null && !string.IsNullOrEmpty((string)e.NewValue))
                 toast.TitleVisibility = Visibility.Visible;
             else
                 toast.TitleVisibility = Visibility.Collapsed;
