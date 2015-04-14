@@ -17,7 +17,6 @@
         </Grid.RowDefinitions>
 
         <toastinet:Toastinet x:Name="Toast"
-			Title="Toastinet"
 			Message="{Binding Message, Mode=TwoWay}"
             Background="#E67F22"
 			Canvas.ZIndex="1"
