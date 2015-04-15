@@ -21,9 +21,8 @@ namespace ToastinetWPF
         private TimeSpan _interval = new TimeSpan(0, 0, 3);
         private bool _isLoaded;
         Queue<string> _queue = new Queue<string>();
-        #endregion
-
         private bool IsFullyLoaded { get; set; }
+        #endregion
 
         #region Owner
 
@@ -145,6 +144,17 @@ namespace ToastinetWPF
         }
         #endregion
 
+        #region Background (Default: ARGB = 255, 52, 73, 94)
+        public new SolidColorBrush Background
+        {
+            get { return (SolidColorBrush)GetValue(BackgroundProperty); }
+            set { SetValue(BackgroundProperty, value); }
+        }
+
+        public new static readonly DependencyProperty BackgroundProperty =
+            DependencyProperty.Register("Background", typeof(SolidColorBrush), typeof(Toastinet), new PropertyMetadata(new SolidColorBrush { Color = new Color { A = 255, R = 52, G = 73, B = 94 }, Opacity = .9 }));
+        #endregion
+
         #region TextHAlignment (Horizontal alignment) (Default: Stretch)
         public HorizontalAlignment TextHAlignment
         {
@@ -173,7 +183,7 @@ namespace ToastinetWPF
             {
                 var toast = (Toastinet)d;
 
-                if (baseValue == null || String.IsNullOrEmpty(baseValue.ToString()))
+                if (baseValue == null || string.IsNullOrEmpty(baseValue.ToString()))
                 {
                     return baseValue;
                 }
@@ -280,14 +290,27 @@ namespace ToastinetWPF
             DependencyProperty.Register("TextWrapping", typeof(TextWrapping), typeof(Toastinet), new PropertyMetadata(TextWrapping.NoWrap));
         #endregion
 
-        #region ReversedHeight
+        #region Height & ReversedHeight
         public int ReversedHeight
         {
             get
             {
-                return -(int)MainGrid.ActualHeight;
+                return -(int)GetValue(HeightProperty);
             }
         }
+
+        public new int Height
+        {
+            get { return (int)GetValue(HeightProperty); }
+            set
+            {
+                SetValue(HeightProperty, value);
+            }
+        }
+
+        public new static readonly DependencyProperty HeightProperty =
+            DependencyProperty.Register("Height", typeof(int), typeof(Toastinet), new PropertyMetadata(30));
+
         #endregion
 
         #region Title
@@ -486,18 +509,34 @@ namespace ToastinetWPF
             return anim;
         }
 
-        private void OnFirstContainerChanged(object sender, SizeChangedEventArgs e)
+        private void OnSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            NotifyChanged();
+            AdjustBodyContainerWidth();
+            ClipIt();
+        }
+
+        /// <summary>
+        /// Adjust the width of the default text message (allow the text to wrap)
+        /// </summary>
+        private void AdjustBodyContainerWidth()
         {
             try
             {
-                ToastMsg.Width = LayoutRoot.ActualWidth - 10 - e.NewSize.Width;
+                ToastMsg.Width = LayoutRoot.ActualWidth - 20 - HeaderContainer.ActualWidth;
             }
             catch (Exception ex)
             {
                 ToastMsg.Width = LayoutRoot.ActualWidth;
                 Debug.WriteLine(ex.Message);
             }
+        }
 
+        /// <summary>
+        /// Create a clip within the Toast bounds
+        /// </summary>
+        private void ClipIt()
+        {
             if (Clipped)
                 LayoutRoot.Clip = new RectangleGeometry
                 {
@@ -507,11 +546,9 @@ namespace ToastinetWPF
                 LayoutRoot.Clip = null;
         }
 
-        private void OnSizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            NotifyChanged();
-        }
-
+        /// <summary>
+        /// Raise property changed to notify view that values have changed
+        /// </summary>
         private void NotifyChanged()
         {
             if (PropertyChanged == null) return;

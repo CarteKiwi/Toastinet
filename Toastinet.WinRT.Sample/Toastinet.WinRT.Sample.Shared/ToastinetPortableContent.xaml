@@ -20,7 +20,14 @@
           Image="/toast.png"
           Canvas.ZIndex="1"
           Queued="True"
-          VerticalAlignment="Top" />
+          VerticalAlignment="Top" >
+            <StackPanel Margin="10">
+                <TextBlock FontSize="20" Text="- custom content"/>
+                <TextBlock FontSize="20" Text="- dynamic height"/>
+                <TextBlock FontSize="20" Text="{Binding Message, Mode=TwoWay}"/>
+                <Image Source="/toast.png" Height="60"></Image>
+            </StackPanel>
+        </toastinet:Toastinet>
 
         <toastinet:Toastinet Grid.Row="0"
           x:Name="Toast2"
