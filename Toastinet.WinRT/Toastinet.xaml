@@ -131,7 +131,7 @@
         </VisualStateManager.VisualStateGroups>
 
         <Grid x:Name="MainGrid" Height="{Binding Height, ElementName=ToastRoot}" 
-              Background="{Binding Background, ElementName=ToastRoot}"
+              Background="{Binding Background, ElementName=ToastRoot, FallbackValue=#E67F22, TargetNullValue=#E67F22}"
               Canvas.ZIndex="1">
             <Grid.Projection>
                 <PlaneProjection/>
