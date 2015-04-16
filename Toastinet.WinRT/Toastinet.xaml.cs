@@ -173,7 +173,7 @@ namespace Toastinet
         {
             get
             {
-                return -(int)MainGrid.ActualHeight;
+                return -(int)LayoutRoot.ActualHeight;
             }
         }
         #endregion
@@ -262,7 +262,7 @@ namespace Toastinet
             if (toast._isLoaded)
             {
                 toast.NotifyChanged();
-                var projection = toast.MainGrid.Projection as PlaneProjection;
+                var projection = toast.LayoutRoot.Projection as PlaneProjection;
                 if (projection != null)
                 {
                     projection.GlobalOffsetX = toast.WidthToOpened;
@@ -270,17 +270,6 @@ namespace Toastinet
             }
         }
 
-        #endregion
-
-        #region Font
-        public new FontFamily FontFamily
-        {
-            get { return (FontFamily)GetValue(FontFamilyProperty); }
-            set { SetValue(FontFamilyProperty, value); }
-        }
-
-        public new static readonly DependencyProperty FontFamilyProperty =
-            DependencyProperty.Register("FontFamily", typeof(FontFamily), typeof(Toastinet), new PropertyMetadata(new FontFamily("Segoe UI")));
         #endregion
 
         #region Clipped
@@ -368,12 +357,12 @@ namespace Toastinet
             }
 
             if (Clipped)
-                LayoutRoot.Clip = new RectangleGeometry
+                Clip = new RectangleGeometry
                 {
                     Rect = new Rect(0, 0, LayoutRoot.ActualWidth, LayoutRoot.ActualHeight + 10)
                 };
             else
-                LayoutRoot.Clip = null;
+                Clip = null;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

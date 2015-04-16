@@ -396,7 +396,7 @@ namespace ToastinetWPF
             if (toast.PropertyChanged != null)
             {
                 toast. NotifyChanged();
-                var tg = toast.MainGrid.RenderTransform as TransformGroup;
+                var tg = toast.LayoutRoot.RenderTransform as TransformGroup;
                 if (tg != null)
                 {
                     var translation = tg.Children[1] as TranslateTransform;
@@ -408,17 +408,6 @@ namespace ToastinetWPF
             }
         }
 
-        #endregion
-
-        #region Font
-        public new FontFamily FontFamily
-        {
-            get { return (FontFamily)GetValue(FontFamilyProperty); }
-            set { SetValue(FontFamilyProperty, value); }
-        }
-
-        public new static readonly DependencyProperty FontFamilyProperty =
-            DependencyProperty.Register("FontFamily", typeof(FontFamily), typeof(Toastinet), new PropertyMetadata(new FontFamily("Segoe UI")));
         #endregion
 
         #region Clipped
@@ -523,11 +512,11 @@ namespace ToastinetWPF
         {
             try
             {
-                ToastMsg.Width = LayoutRoot.ActualWidth - 20 - HeaderContainer.ActualWidth;
+                ToastMsg.Width = ActualWidth - 20 - HeaderContainer.ActualWidth;
             }
             catch (Exception ex)
             {
-                ToastMsg.Width = LayoutRoot.ActualWidth;
+                ToastMsg.Width = ActualWidth;
                 Debug.WriteLine(ex.Message);
             }
         }
@@ -538,12 +527,12 @@ namespace ToastinetWPF
         private void ClipIt()
         {
             if (Clipped)
-                LayoutRoot.Clip = new RectangleGeometry
+                Clip = new RectangleGeometry
                 {
                     Rect = new Rect(0, 0, LayoutRoot.ActualWidth, LayoutRoot.ActualHeight + 10)
                 };
             else
-                LayoutRoot.Clip = null;
+                Clip = null;
         }
 
         /// <summary>
