@@ -55,7 +55,7 @@ namespace ToastinetSample
 
         private void OnBasicToast2(object sender, RoutedEventArgs e)
         {
-            Toast2.Message = "This is a basic toast with message and without logo. You can set a large text (you have to set height indeed)";
+            Toast2.Message = "This is a basic toast with message and without logo. You can set a large text (height is now auto !)";
         }
 
         private void OnNotStretch(object sender, RoutedEventArgs e)

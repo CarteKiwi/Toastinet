@@ -29,11 +29,10 @@
                 <Image Source="toast.png" Height="60"></Image>
             </StackPanel>
         </toastinet:Toastinet>
-
+  
         <toastinet:Toastinet Grid.Row="0"
 			x:Name="Toast2"
 			Duration="1"
-			Height="105"
 			FontSize="25"
 			TextHAlignment="Center"
 			AnimationType="Vertical"
@@ -45,6 +44,7 @@
 
         <toastinet:Toastinet x:Name="Toast3"
 			Duration="1"
+            Height="50"
 			Title="Toastinet"
 			AnimationType="RightToLeft"
 			Image="toast.png"
@@ -58,13 +58,22 @@
             <TextBlock Text="Let's Toast with Toastinet" Margin="0" FontSize="18" VerticalAlignment="Center" />
         </StackPanel>
 
+        <Button Background="Black" 
+                Height="60"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                Margin="0,-10,0,0" Padding="5"
+                BorderThickness="1"
+                FontSize="15"
+                Content="Zone behind the toast is clickable"></Button>
+
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
 
             <StackPanel>
-                <Button Content="basic with bound data" Click="OnBasicToast" Height="80"/>
+                <Button Content="data binding + custom content" Click="OnBasicToast" Height="80"/>
 
-                <Button Content="text wrapping from top" Click="OnBasicToast2" Height="80"/>
+                <Button Content="text wrapping" Click="OnBasicToast2" Height="80"/>
 
                 <Button Content="animation LeftToLeft" Click="OnL2L" Height="80"/>
 
