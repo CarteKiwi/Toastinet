@@ -468,6 +468,9 @@ namespace ToastinetWPF
         {
             InitializeComponent();
 
+            // Default Padding
+            Padding = new Thickness(10);
+
             Loaded += (s, e) =>
             {
                 if (PropertyChanged != null)

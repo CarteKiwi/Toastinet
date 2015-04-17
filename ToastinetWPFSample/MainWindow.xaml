@@ -13,6 +13,7 @@
 
         <toastinetWpf:Toastinet x:Name="Toast"
           Title="Toastinet"
+          Background="#2c3e50"
           Message="{Binding Message, Mode=TwoWay}"
           Image="/toast.png"
           Canvas.ZIndex="1"
@@ -28,6 +29,7 @@
         <toastinetWpf:Toastinet x:Name="Toast2"
                              Duration="1"
                              FontSize="15"
+                             Padding="50"
                              TextHAlignment="Center"
                              AnimationType="Vertical"
                              Background="#2ecc71"
@@ -74,6 +76,8 @@
 
             <toastinetWpf:Toastinet x:Name="Toast4"
                   Duration="1"
+                  Padding="0"
+                  Background="#2c3e50"
                   Message="Toasts are now clipped"
                   AnimationType="RightToLeft"
                   Width="250"

@@ -34,6 +34,7 @@
 			x:Name="Toast2"
 			Duration="1"
 			FontSize="25"
+            Padding="50"
 			TextHAlignment="Center"
 			AnimationType="Vertical"
 			Background="#2ecc71"
@@ -88,6 +89,8 @@
 
             <toastinet:Toastinet x:Name="Toast4"
 				Duration="1"
+                Padding="0"
+                Background="#E67F22"
 				Message="Toasts are now clipped"
 				AnimationType="RightToLeft"
 				Width="250"

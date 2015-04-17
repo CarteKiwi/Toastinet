@@ -141,39 +141,41 @@
                 <TranslateTransform/>
             </TransformGroup>
         </Grid.RenderTransform>
-
-        <StackPanel Orientation="Horizontal"
+        
+        <Grid Margin="{Binding Padding, ElementName=ToastRoot}">
+            <StackPanel Orientation="Horizontal"
                     x:Name="DefaultContent"
                     HorizontalAlignment="{Binding TextHAlignment, ElementName=ToastRoot}">
 
-            <StackPanel Orientation="Horizontal" VerticalAlignment="Center"
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center"
                         x:Name="HeaderContainer">
-                <Image Source="{Binding Image, ElementName=ToastRoot}" 
+                    <Image Source="{Binding Image, ElementName=ToastRoot}" 
                        HorizontalAlignment="Left"
                        Margin="20,0,0,0"
                        Height="30" Width="30"
                        Visibility="{Binding LogoVisibility, ElementName=ToastRoot}"/>
-                <TextBlock Text="{Binding Title, ElementName=ToastRoot}" Foreground="{Binding Foreground, ElementName=ToastRoot}"
+                    <TextBlock Text="{Binding Title, ElementName=ToastRoot}" Foreground="{Binding Foreground, ElementName=ToastRoot}"
                            FontWeight="Bold"
                            FontFamily="{Binding FontFamily, ElementName=ToastRoot}"
                            VerticalAlignment="Center"
                            Margin="10,0,0,0"
                            Visibility="{Binding TitleVisibility, ElementName=ToastRoot}"/>
-                <TextBlock Margin="5,0,0,0" x:Name="Graduation"/>
-            </StackPanel>
+                    <TextBlock Margin="5,0,0,0" x:Name="Graduation"/>
+                </StackPanel>
 
-            <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Center"
+                <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Center"
                         x:Name="BodyContainer">
-                <TextBlock x:Name="ToastMsg"
+                    <TextBlock x:Name="ToastMsg"
                            Text="{Binding Message, ElementName=ToastRoot}" Foreground="{Binding Foreground, ElementName=ToastRoot}"
                            TextWrapping="{Binding TextWrapping, ElementName=ToastRoot}"
                            FontWeight="Thin"
                            FontFamily="{Binding FontFamily, ElementName=ToastRoot}"
                            VerticalAlignment="Center"
                            Margin="10,0,0,0"/>
+                </StackPanel>
             </StackPanel>
-        </StackPanel>
 
-        <ContentPresenter Content="{Binding ToastContent, ElementName=ToastRoot}"></ContentPresenter>
+            <ContentPresenter Content="{Binding ToastContent, ElementName=ToastRoot}"/>
+        </Grid>
     </Grid>
 </UserControl>
