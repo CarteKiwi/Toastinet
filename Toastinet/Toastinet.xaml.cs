@@ -327,6 +327,9 @@ namespace Toastinet
         {
             InitializeComponent();
 
+            // Default Padding
+            Padding = new Thickness(10);
+
             Loaded += (s, e) =>
             {
                 _isLoaded = true;
@@ -354,11 +357,11 @@ namespace Toastinet
         {
             try
             {
-                ToastMsg.Width = LayoutRoot.ActualWidth - 10 - e.NewSize.Width;
+                ToastMsg.Width = LayoutRoot.ActualWidth - 10 - e.NewSize.Width - Padding.Left - Padding.Right;
             }
             catch
             {
-                ToastMsg.Width = LayoutRoot.ActualWidth;
+                ToastMsg.Width = LayoutRoot.ActualWidth - Padding.Left - Padding.Right;
             }
 
             if (Clipped)

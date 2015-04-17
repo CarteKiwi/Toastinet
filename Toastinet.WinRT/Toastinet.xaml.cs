@@ -327,6 +327,9 @@ namespace Toastinet
         {
             InitializeComponent();
 
+            // Default Padding
+            Padding = new Thickness(10);
+
             Loaded += (s, e) =>
             {
                 _isLoaded = true;
