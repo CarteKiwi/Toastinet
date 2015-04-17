@@ -515,12 +515,11 @@ namespace ToastinetWPF
         {
             try
             {
-                ToastMsg.Width = ActualWidth - 20 - HeaderContainer.ActualWidth;
+                ToastMsg.Width = ActualWidth - 20 - HeaderContainer.ActualWidth - Padding.Left - Padding.Right;
             }
             catch (Exception ex)
             {
-                ToastMsg.Width = ActualWidth;
-                Debug.WriteLine(ex.Message);
+                ToastMsg.Width = Width;
             }
         }
 

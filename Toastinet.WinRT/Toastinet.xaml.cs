@@ -351,18 +351,17 @@ namespace Toastinet
         {
             try
             {
-                ToastMsg.Width = LayoutRoot.ActualWidth - 10 - e.NewSize.Width;
+                ToastMsg.Width = LayoutRoot.ActualWidth - 10 - e.NewSize.Width - Padding.Left - Padding.Right;
             }
-            catch (Exception ex)
+            catch
             {
-                ToastMsg.Width = LayoutRoot.ActualWidth;
-                Debug.WriteLine(ex.Message);
+                ToastMsg.Width = Width - 20;
             }
 
             if (Clipped)
                 Clip = new RectangleGeometry
                 {
-                    Rect = new Rect(0, 0, LayoutRoot.ActualWidth, LayoutRoot.ActualHeight + 10)
+                    Rect = new Rect(0, 0, ActualWidth, ActualHeight + 10)
                 };
             else
                 Clip = null;
