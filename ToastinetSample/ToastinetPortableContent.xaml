@@ -4,17 +4,12 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:toastinet="clr-namespace:Toastinet;assembly=Toastinet"
-    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
     x:Class="ToastinetSample.ToastinetPortableContent"
     mc:Ignorable="d"
     DataContext="{Binding RelativeSource={RelativeSource Self}}"
     d:DesignHeight="480" d:DesignWidth="480">
 
     <Grid x:Name="LayoutRoot">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
 
         <toastinet:Toastinet x:Name="Toast"
 			Message="{Binding Message, Mode=TwoWay}"
@@ -53,7 +48,8 @@
 			VerticalAlignment="Top" />
 
         <!--TitlePanel contains the name of the application and page title-->
-        <StackPanel x:Name="TitlePanel" Grid.Row="0" Background="#E67F22"
+        <StackPanel x:Name="TitlePanel" Background="#E67F22"
+                    VerticalAlignment="Top"
 			Margin="0,20" Orientation="Horizontal">
             <Image Source="toast.png" Height="50" Margin="10,0"/>
             <TextBlock Text="Let's Toast with Toastinet" Margin="0" FontSize="18" VerticalAlignment="Center" />
@@ -69,7 +65,7 @@
                 Content="Zone behind the toast is clickable"></Button>
 
         <!--ContentPanel - place additional content here-->
-        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+        <Grid x:Name="ContentPanel" Margin="12,100,12,0">
 
             <StackPanel>
                 <Button Content="data binding + custom content" Click="OnBasicToast" Height="80"/>

@@ -15,7 +15,7 @@
                 <ResourceDictionary Source="Resources/ApplicationStyles.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
-            <Storyboard x:Key="RotationSb">
+            <Storyboard x:Key="RotationSb" Completed="SbCompleted">
                 <DoubleAnimation Duration="0:0:1" To="0" Storyboard.TargetProperty="(UIElement.RenderTransform).Children[0].Angle" Storyboard.TargetName="LayoutRoot"/>
                 <DoubleAnimation Duration="0:0:1" To="{Binding ReversedHeight, ElementName=ToastRoot}" Storyboard.TargetProperty="(UIElement.RenderTransform).Children[1].Y" Storyboard.TargetName="LayoutRoot" d:IsOptimized="True">
                     <DoubleAnimation.EasingFunction>
@@ -24,7 +24,7 @@
                 </DoubleAnimation>
             </Storyboard>
 
-            <Storyboard x:Key="RotationStateSb">
+            <Storyboard x:Key="RotationStateSb" >
                 <DoubleAnimation Duration="0" To="90" Storyboard.TargetProperty="(UIElement.RenderTransform).Children[0].Angle" Storyboard.TargetName="LayoutRoot" d:IsOptimized="True"/>
                 <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="LayoutRoot">
                     <DiscreteObjectKeyFrame KeyTime="0">
@@ -35,7 +35,7 @@
                 </ObjectAnimationUsingKeyFrames>
             </Storyboard>
 
-            <Storyboard x:Key="VerticalStateSb">
+            <Storyboard x:Key="VerticalStateSb" Completed="SbCompleted">
                 <DoubleAnimation Duration="0" To="{Binding ReversedHeight, ElementName=ToastRoot}" Storyboard.TargetProperty="(UIElement.RenderTransform).Children[1].Y" Storyboard.TargetName="LayoutRoot" d:IsOptimized="True"/>
                 <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="LayoutRoot">
                     <DiscreteObjectKeyFrame KeyTime="0">
@@ -46,7 +46,7 @@
                 </ObjectAnimationUsingKeyFrames>
             </Storyboard>
 
-            <Storyboard x:Key="L2RSb">
+            <Storyboard x:Key="L2RSb" Completed="SbCompleted">
                 <DoubleAnimation Duration="0:0:1" To="{Binding WidthToClosed, ElementName=ToastRoot}" Storyboard.TargetProperty="(UIElement.RenderTransform).Children[1].X" Storyboard.TargetName="LayoutRoot" d:IsOptimized="True">
                     <DoubleAnimation.EasingFunction>
                         <ElasticEase EasingMode="EaseIn" Oscillations="1" Springiness="10"/>
@@ -80,6 +80,7 @@
 
     <Grid x:Name="LayoutRoot" 
           Background="{Binding Background, ElementName=ToastRoot}" 
+          HorizontalAlignment="Stretch"
           Canvas.ZIndex="1"
           RenderTransformOrigin=".5,.5">
         <VisualStateManager.VisualStateGroups>
@@ -141,37 +142,36 @@
                 <TranslateTransform/>
             </TransformGroup>
         </Grid.RenderTransform>
-        
+
         <Grid Margin="{Binding Padding, ElementName=ToastRoot}">
             <StackPanel Orientation="Horizontal"
                     x:Name="DefaultContent"
                     HorizontalAlignment="{Binding TextHAlignment, ElementName=ToastRoot}">
 
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center"
-                        x:Name="HeaderContainer">
+                            SizeChanged="OnFirstContainerChanged">
                     <Image Source="{Binding Image, ElementName=ToastRoot}" 
-                       HorizontalAlignment="Left"
-                       Margin="20,0,0,0"
-                       Height="30" Width="30"
-                       Visibility="{Binding LogoVisibility, ElementName=ToastRoot}"/>
+                           HorizontalAlignment="Left"
+                           Margin="20,0,0,0"
+                           Height="30" Width="30"
+                           Visibility="{Binding LogoVisibility, ElementName=ToastRoot}"/>
                     <TextBlock Text="{Binding Title, ElementName=ToastRoot}" Foreground="{Binding Foreground, ElementName=ToastRoot}"
-                           FontWeight="Bold"
-                           FontFamily="{Binding FontFamily, ElementName=ToastRoot}"
-                           VerticalAlignment="Center"
-                           Margin="10,0,0,0"
-                           Visibility="{Binding TitleVisibility, ElementName=ToastRoot}"/>
+                               FontWeight="Bold"
+                               FontFamily="{Binding FontFamily, ElementName=ToastRoot}"
+                               VerticalAlignment="Center"
+                               Margin="10,0,0,0"
+                               Visibility="{Binding TitleVisibility, ElementName=ToastRoot}"/>
                     <TextBlock Margin="5,0,0,0" x:Name="Graduation"/>
                 </StackPanel>
 
-                <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Center"
-                        x:Name="BodyContainer">
+                <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Center">
                     <TextBlock x:Name="ToastMsg"
-                           Text="{Binding Message, ElementName=ToastRoot}" Foreground="{Binding Foreground, ElementName=ToastRoot}"
-                           TextWrapping="{Binding TextWrapping, ElementName=ToastRoot}"
-                           FontWeight="Thin"
-                           FontFamily="{Binding FontFamily, ElementName=ToastRoot}"
-                           VerticalAlignment="Center"
-                           Margin="10,0,0,0"/>
+                               Text="{Binding Message, ElementName=ToastRoot}" Foreground="{Binding Foreground, ElementName=ToastRoot}"
+                               TextWrapping="{Binding TextWrapping, ElementName=ToastRoot}"
+                               FontWeight="Thin"
+                               FontFamily="{Binding FontFamily, ElementName=ToastRoot}"
+                               VerticalAlignment="Center"
+                               Margin="10,0,0,0"/>
                 </StackPanel>
             </StackPanel>
 
