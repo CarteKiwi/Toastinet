@@ -174,7 +174,9 @@ namespace ToastinetWPF
         }
 
         public static readonly DependencyProperty MessageProperty =
-            DependencyProperty.Register("Message", typeof(string), typeof(Toastinet), new PropertyMetadata(String.Empty, OnTextChanged, OnTextSet));
+            DependencyProperty.Register("Message", typeof(string), typeof(Toastinet), new PropertyMetadata(String.Empty, OnTextChanged));
+
+        private static object _oldValue;
 
         // This is the CoerceValue method, always called even if the value does not change
         private static object OnTextSet(DependencyObject d, object baseValue)
@@ -183,11 +185,25 @@ namespace ToastinetWPF
             {
                 var toast = (Toastinet)d;
 
-                if (baseValue == null || string.IsNullOrEmpty(baseValue.ToString()))
+                if (baseValue == null || string.IsNullOrEmpty(baseValue.ToString()) ||
+                    baseValue == _oldValue)
                 {
+                    _oldValue = null;
+                    // if value is null
                     return baseValue;
                 }
 
+                if (toast.Queued &&
+                    !toast.GetCurrentState(toast.GetValidAnimation() + "Group").Name.Contains("Closed"))
+                {
+                    if (!toast._queue.Contains(baseValue))
+                        toast._queue.Enqueue(baseValue.ToString());
+
+                    toast.Message = _oldValue.ToString();
+                    return null;
+                }
+
+                _oldValue = baseValue;
                 VisualStateManager.GoToState(toast, toast.GetValidAnimation() + "Opened", true);
 
                 var timer = new DispatcherTimer { Interval = toast._interval };
@@ -208,39 +224,35 @@ namespace ToastinetWPF
 
         private static void OnTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            //try
-            //{
-            //    var toast = (Toastinet)d;
+            try
+            {
+                var toast = (Toastinet)d;
 
-            //    if (e.NewValue == null || String.IsNullOrEmpty(e.NewValue.ToString()) ||
-            //        (e.OldValue != null && toast.Queued && toast._queue.Contains(e.OldValue.ToString())))
-            //    {
-            //        if (e.NewValue == null || String.IsNullOrEmpty(e.NewValue.ToString()))
-            //            if (toast.Queued && toast._queue.Any())
-            //            {
-            //                toast.Message = toast._queue.Dequeue();
-            //            }
-            //        return;
-            //    }
+                if (e.NewValue == null || String.IsNullOrEmpty(e.NewValue.ToString()) ||
+                    (e.OldValue != null && toast.Queued && toast._queue.Contains(e.OldValue.ToString())))
+                {
+                    return;
+                }
 
-            //    if (e.OldValue != null && toast.Queued && !toast.GetCurrentState(toast.GetValidAnimation() + "Group").Name.Contains("Closed"))
-            //    {
-            //        toast._queue.Enqueue(e.NewValue.ToString());
-            //        toast.Message = e.OldValue.ToString();
-            //        return;
-            //    }
+                if (e.OldValue != null && toast.Queued &&
+                    !toast.GetCurrentState(toast.GetValidAnimation() + "Group").Name.Contains("Closed"))
+                {
+                    toast._queue.Enqueue(e.NewValue.ToString());
+                    toast.Message = e.OldValue.ToString();
+                    return;
+                }
 
-            //    VisualStateManager.GoToState(toast, toast.GetValidAnimation() + "Opened", true);
+                VisualStateManager.GoToState(toast, toast.GetValidAnimation() + "Opened", true);
 
-            //    var timer = new DispatcherTimer { Interval = toast._interval };
-            //    timer.Tick += (s, t) =>
-            //    {
-            //        VisualStateManager.GoToState(toast, toast.GetValidAnimation() + "Closed", true);
-            //        timer.Stop();
-            //    };
-            //    timer.Start();
-            //}
-            //catch { }
+                var timer = new DispatcherTimer { Interval = toast._interval };
+                timer.Tick += (s, t) =>
+                {
+                    VisualStateManager.GoToState(toast, toast.GetValidAnimation() + "Closed", true);
+                    timer.Stop();
+                };
+                timer.Start();
+            }
+            catch { }
         }
 
         public VisualState GetCurrentState(string stateGroupName)
@@ -293,24 +305,8 @@ namespace ToastinetWPF
         #region Height & ReversedHeight
         public int ReversedHeight
         {
-            get
-            {
-                return -(int)GetValue(HeightProperty);
-            }
+            get { return -(int)LayoutRoot.ActualHeight; }
         }
-
-        public new int Height
-        {
-            get { return (int)GetValue(HeightProperty); }
-            set
-            {
-                SetValue(HeightProperty, value);
-            }
-        }
-
-        public new static readonly DependencyProperty HeightProperty =
-            DependencyProperty.Register("Height", typeof(int), typeof(Toastinet), new PropertyMetadata(30));
-
         #endregion
 
         #region Title
@@ -395,7 +391,7 @@ namespace ToastinetWPF
 
             if (toast.PropertyChanged != null)
             {
-                toast. NotifyChanged();
+                toast.NotifyChanged();
                 var tg = toast.LayoutRoot.RenderTransform as TransformGroup;
                 if (tg != null)
                 {
@@ -425,7 +421,7 @@ namespace ToastinetWPF
         /// <summary>
         /// TODO : Not working right now. Almost done.
         /// </summary>
-        private bool Queued
+        public bool Queued
         {
             get { return (bool)GetValue(QueuedProperty); }
             set { SetValue(QueuedProperty, value); }
@@ -461,6 +457,17 @@ namespace ToastinetWPF
             }
         }
 
+        #region Padding
+        public new Thickness Padding
+        {
+            get { return (Thickness)GetValue(PaddingProperty); }
+            set { SetValue(PaddingProperty, value); }
+        }
+
+        public static readonly DependencyProperty PaddingProperty =
+            DependencyProperty.Register("Padding", typeof(Thickness), typeof(Toastinet), new PropertyMetadata(new Thickness(0)));
+        #endregion
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -473,12 +480,8 @@ namespace ToastinetWPF
 
             Loaded += (s, e) =>
             {
-                if (PropertyChanged != null)
-                {
-                    _isLoaded = true;
-                    NotifyChanged();
-                    VisualStateManager.GoToState(this, GetValidAnimation() + "Closed", false);
-                }
+                _isLoaded = true;
+                NotifyChanged();
 
                 VisualStateManager.GoToState(this, GetValidAnimation() + "Closed", false);
             };
@@ -504,8 +507,33 @@ namespace ToastinetWPF
         private void OnSizeChanged(object sender, SizeChangedEventArgs e)
         {
             NotifyChanged();
-            AdjustBodyContainerWidth();
-            ClipIt();
+            //AdjustBodyContainerWidth();
+            //ClipIt();
+        }
+
+        /// <summary>
+        /// Use to clip the toast content to its bounds
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnFirstContainerChanged(object sender, SizeChangedEventArgs e)
+        {
+            try
+            {
+                ToastMsg.Width = LayoutRoot.ActualWidth - 10 - e.NewSize.Width - Padding.Left - Padding.Right;
+            }
+            catch
+            {
+                ToastMsg.Width = Width - 20;
+            }
+
+            if (Clipped)
+                Clip = new RectangleGeometry
+                {
+                    Rect = new Rect(0, 0, ActualWidth, ActualHeight + 10)
+                };
+            else
+                Clip = null;
         }
 
         /// <summary>
@@ -513,14 +541,14 @@ namespace ToastinetWPF
         /// </summary>
         private void AdjustBodyContainerWidth()
         {
-            try
-            {
-                ToastMsg.Width = ActualWidth - 20 - HeaderContainer.ActualWidth - Padding.Left - Padding.Right;
-            }
-            catch (Exception ex)
-            {
-                ToastMsg.Width = Width;
-            }
+            //try
+            //{
+            //    ToastMsg.Width = ActualWidth - 20 - HeaderContainer.ActualWidth - Padding.Left - Padding.Right;
+            //}
+            //catch (Exception ex)
+            //{
+            //    ToastMsg.Width = Width;
+            //}
         }
 
         /// <summary>
@@ -535,6 +563,14 @@ namespace ToastinetWPF
                 };
             else
                 Clip = null;
+        }
+
+        private void SbCompleted(object sender, EventArgs e)
+        {
+            if (_queue.Any())
+            {
+                Message = _queue.Dequeue();
+            }
         }
 
         /// <summary>

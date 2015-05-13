@@ -37,7 +37,7 @@
         </Setter>
     </Style>
 
-    <Style x:Key="PhoneTextSmallerStyle" TargetType="TextBlock" BasedOn="{StaticResource PhoneTextSmallStyle}">
+    <Style x:Key="PhoneTextSmallerStyle" TargetType="TextBlock">
         <Setter Property="FontSize" Value="12"/>
     </Style>
     
